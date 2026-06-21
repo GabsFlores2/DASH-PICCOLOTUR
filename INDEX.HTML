@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Ocorrências · Fretado</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111827'/%3E%3Crect x='13' y='30' width='7' height='21' rx='2' fill='%232563EB'/%3E%3Crect x='25' y='20' width='7' height='31' rx='2' fill='%230D9488'/%3E%3Crect x='37' y='26' width='7' height='25' rx='2' fill='%23D97706'/%3E%3Crect x='49' y='14' width='7' height='37' rx='2' fill='%23DC2626' opacity='.9'/%3E%3Ccircle cx='17' cy='17' r='4' fill='%2334D399'/%3E%3C/svg%3E">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap');
+
+  :root{
+    --canvas:#EDF0F4; --card:#FFFFFF; --ink:#16202E; --muted:#64748B;
+    --line:#E2E8F0; --line-2:#CBD5E1;
+    --accent:#2563EB; --accent-d:#1E40AF;
+    --red:#DC2626; --red-s:#FEE2E2; --green:#059669; --green-s:#D1FAE5;
+    --amber:#D97706; --amber-s:#FEF3C7; --violet:#7C3AED;
+    --shadow:0 1px 2px rgba(16,24,40,.06), 0 4px 16px rgba(16,24,40,.06);
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--canvas);color:var(--ink);
+    font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+    font-size:14px;line-height:1.45;padding-bottom:50px;}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 20px;}
+  .num{font-family:var(--mono);font-feature-settings:"tnum";}
+
+  /* ---- Topbar ---- */
+  .top{background:var(--ink);color:#fff;border-bottom:3px solid var(--accent);}
+  .top .wrap{display:flex;align-items:center;gap:16px;padding:16px 20px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:11px;}
+  .brand .mark{width:34px;height:34px;border-radius:9px;background:#0B1220;display:flex;
+    align-items:center;justify-content:center;border:1px solid #2a3650;}
+  .brand .mark svg{width:20px;height:20px;}
+  .brand h1{font-size:16px;font-weight:700;letter-spacing:-.2px;line-height:1.1;}
+  .brand p{font-size:11.5px;color:#9fb0c9;font-weight:500;letter-spacing:.02em;}
+  .live{margin-left:auto;display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .pulse{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
+    background:#0B1220;border:1px solid #2a3650;border-radius:999px;padding:7px 13px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:#34D399;box-shadow:0 0 0 0 rgba(52,211,153,.6);
+    animation:beat 1.8s infinite;}
+  .pulse.snap .dot{background:var(--amber);animation:none;box-shadow:none;}
+  .pulse.snap{color:#fcd9a8;}
+  @keyframes beat{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55)}70%{box-shadow:0 0 0 7px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+  .stamp{font-size:11.5px;color:#9fb0c9;font-family:var(--mono);}
+  .top button{background:#0B1220;color:#dbe4f0;border:1px solid #2a3650;border-radius:9px;
+    padding:8px 13px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;}
+  .top button:hover{background:#16223a;border-color:#3a4a6e;}
+
+  /* ---- Source bar ---- */
+  .source{background:#0B1220;color:#9fb0c9;font-size:11.5px;}
+  .source .wrap{padding:9px 20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  .source code{font-family:var(--mono);color:#7fa8ff;background:#111c30;padding:2px 7px;border-radius:5px;font-size:11px;}
+  .source .grow{flex:1 1 auto;}
+  .source input{background:#111c30;border:1px solid #2a3650;color:#dbe4f0;border-radius:7px;
+    padding:7px 10px;font-size:11.5px;font-family:var(--mono);min-width:240px;flex:1 1 280px;}
+  .source label{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;color:#cbd5e1;}
+
+  /* ---- Filters ---- */
+  .filters{padding:18px 0 4px;display:flex;gap:22px;flex-wrap:wrap;align-items:flex-end;}
+  .fgroup{display:flex;flex-direction:column;gap:7px;}
+  .fgroup .flab{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;}
+  .chip{border:1px solid var(--line-2);background:var(--card);border-radius:8px;padding:7px 13px;
+    font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;transition:.13s;font-family:inherit;
+    display:flex;align-items:center;gap:7px;}
+  .chip:hover{border-color:var(--accent);color:var(--accent);}
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .chip .cdot{width:8px;height:8px;border-radius:2px;}
+  .clear{margin-left:auto;align-self:center;border:none;background:none;color:var(--accent);
+    font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit;text-decoration:underline;}
+
+  /* ---- KPIs ---- */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:14px;margin-top:16px;}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 17px;box-shadow:var(--shadow);
+    position:relative;overflow:hidden;}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);}
+  .kpi.red::before{background:var(--red);} .kpi.green::before{background:var(--green);}
+  .kpi.amber::before{background:var(--amber);} .kpi.violet::before{background:var(--violet);}
+  .kpi .klab{font-size:11.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+  .kpi .kval{font-size:30px;font-weight:700;margin-top:7px;letter-spacing:-1px;line-height:1;}
+  .kpi .ksub{font-size:11.5px;color:var(--muted);margin-top:7px;font-weight:500;}
+
+  /* ---- Panels ---- */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:18px;}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);}
+  .span6{grid-column:span 6;} .span4{grid-column:span 4;} .span8{grid-column:span 8;} .span12{grid-column:span 12;}
+  @media(max-width:880px){ .span6,.span4,.span8{grid-column:span 12;} }
+  .ptitle{font-size:13.5px;font-weight:700;letter-spacing:-.1px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .ptitle small{font-weight:500;color:var(--muted);font-size:11.5px;}
+  .pbody{margin-top:16px;}
+
+  /* ---- Bars ---- */
+  .brow{display:grid;grid-template-columns:108px 1fr 34px;align-items:center;gap:10px;margin-bottom:11px;}
+  .blabel{font-size:12.5px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .btrack{height:24px;background:#F1F5F9;border-radius:7px;overflow:hidden;display:flex;}
+  .bfill{height:100%;width:0;transition:width .9s cubic-bezier(.22,1,.36,1);border-radius:7px;}
+  .btrack.stacked .bfill:first-child{border-radius:7px 0 0 7px;}
+  .btrack.stacked .bfill:last-child{border-radius:0 7px 7px 0;}
+  .bval{font-family:var(--mono);font-size:13px;font-weight:600;text-align:right;}
+
+  /* ---- Donut ---- */
+  .donut-wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+  .donut{flex:0 0 auto;}
+  .donut circle{transition:stroke-dashoffset 1s cubic-bezier(.22,1,.36,1);}
+  .legend{display:flex;flex-direction:column;gap:10px;}
+  .leg{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;}
+  .leg .sw{width:12px;height:12px;border-radius:3px;}
+  .leg .lv{margin-left:auto;font-family:var(--mono);color:var(--muted);font-weight:600;padding-left:14px;}
+
+  /* ---- Matrix ---- */
+  .matrix{display:grid;gap:6px;}
+  .mhead,.mrow{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:6px;align-items:stretch;}
+  .mhead div{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);
+    text-align:center;padding:4px;}
+  .mhead div:first-child{text-align:left;}
+  .mrow .mlbl{font-size:12.5px;font-weight:600;display:flex;align-items:center;padding:8px 4px;}
+  .cell{border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;
+    padding:12px 4px;font-family:var(--mono);font-weight:700;font-size:18px;color:#0B1220;}
+  .cell small{font-family:'IBM Plex Sans';font-size:10px;font-weight:600;opacity:.7;margin-top:2px;}
+
+  /* ---- Timeline ---- */
+  .tl{display:flex;align-items:flex-end;gap:10px;height:130px;padding-top:8px;}
+  .tlcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;justify-content:flex-end;height:100%;}
+  .tlbar{width:60%;max-width:34px;background:var(--accent);border-radius:5px 5px 0 0;height:0;
+    transition:height .9s cubic-bezier(.22,1,.36,1);min-height:3px;}
+  .tlcap{font-size:10.5px;color:var(--muted);font-family:var(--mono);}
+  .tlval{font-size:11px;font-weight:700;font-family:var(--mono);}
+
+  /* ---- Insights ---- */
+  .insights{list-style:none;display:flex;flex-direction:column;gap:11px;}
+  .insights li{display:flex;gap:11px;font-size:13px;line-height:1.5;}
+  .insights .ic{flex:0 0 auto;width:24px;height:24px;border-radius:7px;display:flex;align-items:center;
+    justify-content:center;font-size:13px;background:var(--accent);color:#fff;}
+  .insights b{font-weight:700;}
+
+  /* ---- Table ---- */
+  .tbar{display:flex;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+  .tbar input{flex:1 1 220px;border:1px solid var(--line-2);border-radius:9px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none;}
+  .tbar input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.13);}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .tbl th{text-align:left;padding:9px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;
+    color:var(--muted);border-bottom:2px solid var(--line);cursor:pointer;user-select:none;white-space:nowrap;}
+  .tbl th:hover{color:var(--accent);}
+  .tbl td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  .tbl tr.main{cursor:pointer;transition:background .12s;}
+  .tbl tr.main:hover{background:#F8FAFC;}
+  .tag{display:inline-flex;align-items:center;gap:5px;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;white-space:nowrap;}
+  .tag.proc{background:var(--red-s);color:#991B1B;} .tag.nproc{background:var(--green-s);color:#065F46;}
+  .tag.t-atraso{background:var(--amber-s);color:#92400E;} .tag.t-ponto{background:#DBEAFE;color:#1E40AF;}
+  .tag.t-falta{background:#EDE9FE;color:#5B21B6;}
+  .detail td{background:#F8FAFC;}
+  .detail .dwrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;padding:6px 2px;}
+  .detail h4{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:4px;}
+  .detail p{font-size:12.5px;line-height:1.5;}
+  .detail a{color:var(--accent);font-weight:600;text-decoration:none;}
+  .mono-sm{font-family:var(--mono);font-size:12px;}
+  .empty{padding:30px;text-align:center;color:var(--muted);font-weight:600;}
+
+  footer{margin-top:30px;color:var(--muted);font-size:11.5px;line-height:1.7;}
+  footer b{color:var(--ink);}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <div class="brand">
+      <div class="mark">
+        <svg viewBox="0 0 64 64"><rect x="10" y="30" width="8" height="22" rx="2" fill="#2563EB"/><rect x="23" y="20" width="8" height="32" rx="2" fill="#0D9488"/><rect x="36" y="26" width="8" height="26" rx="2" fill="#D97706"/><rect x="49" y="14" width="8" height="38" rx="2" fill="#DC2626"/></svg>
+      </div>
+      <div>
+        <h1>Painel de Ocorrências · Fretado</h1>
+        <p>Monitoramento de reclamações de transporte fretado — Página1 (A:W)</p>
+      </div>
+    </div>
+    <div class="live">
+      <div class="pulse" id="pulse"><span class="dot"></span><span id="pulseTxt">Conectando…</span></div>
+      <span class="stamp" id="stamp">—</span>
+      <button id="refresh">↻ Atualizar</button>
+    </div>
+  </div>
+</div>
+
+<div class="source">
+  <div class="wrap">
+    <span>Fonte ao vivo:</span>
+    <input id="srcUrl" spellcheck="false" placeholder="URL CSV da planilha publicada">
+    <label><input type="checkbox" id="autoChk" checked> auto a cada <code>30s</code></label>
+    <span class="grow"></span>
+    <span id="srcNote">Para tempo real, a planilha precisa estar pública (qualquer pessoa com o link pode ver).</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="filters" id="filters"></div>
+  <div class="kpis" id="kpis"></div>
+
+  <div class="grid">
+    <div class="panel span4">
+      <div class="ptitle">Procedência das ocorrências <small>validação do fretado</small></div>
+      <div class="pbody donut-wrap"><div id="donut"></div><div class="legend" id="donutLeg"></div></div>
+    </div>
+    <div class="panel span4">
+      <div class="ptitle">Por tipo de ocorrência</div>
+      <div class="pbody" id="byTipo"></div>
+    </div>
+    <div class="panel span4">
+      <div class="ptitle">Top linhas afetadas</div>
+      <div class="pbody" id="byLinha"></div>
+    </div>
+
+    <div class="panel span6">
+      <div class="ptitle">Confiabilidade por empresa <small>procede vs. não procede</small></div>
+      <div class="pbody" id="byEmpresa"></div>
+    </div>
+    <div class="panel span6">
+      <div class="ptitle">Cruzamento: tipo × validação <small>onde a falha se confirma</small></div>
+      <div class="pbody" id="matrix"></div>
+    </div>
+
+    <div class="panel span8">
+      <div class="ptitle">Ocorrências por data <small>data do fato</small></div>
+      <div class="pbody" id="timeline"></div>
+    </div>
+    <div class="panel span4">
+      <div class="ptitle">Leituras automáticas</div>
+      <div class="pbody"><ul class="insights" id="insights"></ul></div>
+    </div>
+
+    <div class="panel span12">
+      <div class="ptitle">Registros <small>clique numa linha para ver relato e réplica</small></div>
+      <div class="pbody">
+        <div class="tbar">
+          <input id="search" placeholder="Buscar por colaborador, linha, ponto, relato…">
+          <span class="mono-sm" id="tcount" style="color:var(--muted)"></span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="tbl" id="table"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <b>Nota técnica.</b> Os números são calculados a partir das colunas A:W. O <b>SLA</b> é derivado (data de abertura → data de retorno do fretado), pois a coluna SLA da planilha está vazia. Amostra pequena (poucos registros): percentuais servem como indicador, não como estatística estável. Telefones são exibidos parcialmente mascarados. As duas ocorrências "fretado não rodou (SHEIN)" têm causa do cliente, embora constem como procedentes — considere uma coluna de causa-raiz para não distorcer a culpa do fretado.
+  </footer>
+</div>
+
+<script type="application/csv" id="seed">
+ID,STATUS,DATA_ABERTURA,EMPRESA,DATA_DA _CORRENCIA,NOME_COLABORADOR,WHATSAPP,LINHA FRETADO,PONTO DE EMBARQUE,WHAREHOUSE,TIPO DE OCORRENCIA,BREVE RELATO,EVIDENCIA,DATA RETORNO FRETADO,VALIDAÇÃO,REPLICA,EVIDENCIA FRETADO,DATA RETORNO EMPRESA,REPLICA 2,DATA RETORNO FRETADO 2,REPLICA 3,MES,SLA
+20260378,CONCLUIDO,02/06/2026,RANDSTAD,01/06/2026,FRANCIELLEN SANTOS DE SOUSA,11960368591,2004,Ponto4- Maria do socorro Silva e bezerra n395- jardim nova cidade,,ATRASO,"O fretado atrasou por conta do trânsito no início da rota, por conta disso, dei início ao meu trabalho as 15h",CLIQUE AQUI,03/06/2026,PROCEDE,"A INFORMAÇÃO É PROCEDENTE, DEVIDO AO INTENSO FLUXO DE TRANSITO DEVIDO A UM ACIDENTE NA REGIÃO DA JUSCELINO, O VEÍCULO CHEGOU NO GLP AS 14:39",https://drive.google.com/file/d/1kuDpy80hI4FBl5Z8qLi9FGpkQ9s1b9AP/view?usp=drive_link
+20260380,CONCLUIDO EMPRESA,06/06/2026,MANPOWER,06/06/2026,Douglas de Santana,11961501807,1000,Padaria pão nosso 2,A,ATRASO,"Não bati o ponto , pq cheguei atrasado por causa do feriado, e quando fosse assim, não era pra bate",,09/06/2026,PROCEDE,"A INFORMAÇÃO É PROCEDENTE, VEÍCULO CHEGOU NO GLP 05:47",https://drive.google.com/file/d/15e3fFnXCacI6iezuF-QJJO0adhlySwk9/view?usp=drive_link
+20260381,CONCLUIDO EMPRESA,06/06/2026,MANPOWER,06/06/2026,Pamela mauescki,11959338489,1008,Rod Afonso de Souza Castellanos 1713,A,PONTO DE EMBARQUE NÃO ATENDIDO,"Passou no ponto e NN parou ,veículo sem identificação e motorista debochou quando eu chamei ele",,15/06/2026,PROCEDE,"A INFORMAÇÃO É PROCEDENTE, O VEÍCULO PASSOU A CIMA DA VELOCIDADE DE ATENDIMENTO NA REGIÃO DO PONTO",https://drive.google.com/file/d/1TZSddYQaN-uyW1qMiABFK-5XnSSQvqqa/view?usp=drive_link
+20260382,CONCLUIDO,15/06/2026,AMERICA RH,14/06/2026,CLAUDINEI XAVIER DE BRITO,11 99435-2198,3004,Reylar supermercados,A,PONTO DE EMBARQUE NÃO ATENDIDO,"Tô aq em frente o mercado Reylar, mas até agora não passou o fretado",,16/06/2026,PROCEDE,FRETADO NÃO RODOU NO DIA 14 CONFORME SOLICITAÇÃO DA SHEIN.,---
+20260383,CONCLUIDO EMPRESA,15/06/2026,MANPOWER,14/06/2026,Wesley Pereira Nunes,73982323048,3000,2 - Adega gelo do milhão,A,PONTO DE EMBARQUE NÃO ATENDIDO,A linha 3000 não passou e fiquei no ponto até às 21h mesmo o ponto estando a mais de 800mts de casa,,18/06/2026,PROCEDE,FRETADO NÃO RODOU NO DIA 14 CONFORME SOLICITAÇÃO DA SHEIN.,---
+20260384,CONCLUIDO EMPRESA,15/06/2026,MANPOWER,13/06/2026,Matheus Justino Nunes,11999147693,2007,Ponto de Ônibus - Casteluche,A,PONTO DE EMBARQUE NÃO ATENDIDO,Fretado passou no ponto antigo de 11/06. Itinerário não bate com trajeto e o ponto deve ser alterado,,18/06/2026,NÃO PROCEDE,"A INFORMAÇÃO NÃO PROCEDE, VEÍCULO ATENDEU O PONTO DENTRO DO PADRÃO QUE CONSTA NO ITINERÁRIO DA LINHA",https://drive.google.com/file/d/1q0LKXsKH5C4h72LgTCQGlaf0OsxRdV_c/view?usp=drive_link
+20260385,CONCLUIDO,17/06/2026,RANDSTAD,13/06/2026,FABRICIO DE LIMA,11954702538,2000,GRU Av Armando Bei,,FALTA,O fretado mudou não avisarão no grupo e eu fiquei em dúvida se era o meu ônibus,CLIQUE AQUI,18/06/2026,NÃO PROCEDE,NÃO HOUVE ALTERAÇÃO DA LINHA 2000 NO ULTIMO MÊS.,---
+20260386,CONCLUIDO,17/06/2026,RANDSTAD,15/06/2026,JANAINA OLIVEIRA RAMOS,11917846492,2007,Ponto 19,,ATRASO,Fretado atrasou por conta do trânsito intenso.,CLIQUE AQUI,18/06/2026,PROCEDE,"A INFORMAÇÃO É PROCEDENTE, VEÍCULO CHEGOU NO GLP 14:23",https://drive.google.com/file/d/1knLumpBZyiInNI8kdVlpYliwbCOXM6ZD/view?usp=drive_link
+20260388,CONCLUIDO EMPRESA,16/06/2026,MANPOWER,15/06/2026,Lidiane Alves de Oliveira Santos,11965847638,2007,9,A,PONTO DE EMBARQUE NÃO ATENDIDO,,,18/06/2026,NÃO PROCEDE,NÃO HÁ INFORMAÇÃO NO CAMPO DO RELATO,---
+20260389,CONCLUIDO EMPRESA,17/06/2026,MANPOWER,17/06/2026,Victoria Brenda benigno de sales gomes,11985117986,4,Em frente ao mercado carvalho,A,PONTO DE EMBARQUE NÃO ATENDIDO,Fiquei esperando o fretado para integração mas ele não passou no ponto,,18/06/2026,NÃO PROCEDE,"A INFORMAÇÃO NÃO PROCEDE, VEÍCULO ATENDEU O PONTO DENTRO DO PADRÃO NO HORARIO DO ITINERÁRIO",https://drive.google.com/file/d/1HlrFf_7FB814rPDOdDy0x9Xb6jtiQkCv/view?usp=drive_link
+20260390
+20260391
+20260392
+20260393
+20260394
+20260395
+20260396
+20260397
+20260398
+20260399
+</script>
+
+<script>
+(() => {
+  const SHEET_ID = '1VA6LtvzV29bTf-vn3SagS4i__uWqOMRgtgZ_1NPAYgM';
+  const GVIZ = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Página1`;
+  const $ = id => document.getElementById(id);
+
+  // ---------- CSV parser (RFC4180) ----------
+  function parseCSV(text){
+    const rows=[]; let row=[], f='', q=false; text = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+    for(let i=0;i<text.length;i++){
+      const c=text[i];
+      if(q){
+        if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; }
+        else f+=c;
+      }else{
+        if(c==='"') q=true;
+        else if(c===','){ row.push(f); f=''; }
+        else if(c==='\n'){ row.push(f); rows.push(row); row=[]; f=''; }
+        else f+=c;
+      }
+    }
+    if(f.length||row.length){ row.push(f); rows.push(row); }
+    return rows;
+  }
+
+  // colunas A:W por posição (resiliente ao cabeçalho com espaço extra)
+  const COL = {ID:0,STATUS:1,ABERTURA:2,EMPRESA:3,OCORR:4,NOME:5,ZAP:6,LINHA:7,PONTO:8,WH:9,
+    TIPO:10,RELATO:11,EVID:12,RET_FRET:13,VALID:14,REPLICA:15,EVID_FRET:16};
+
+  function pdate(s){ if(!s) return null; const m=String(s).trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/); return m? new Date(+m[3],+m[2]-1,+m[1]) : null; }
+  function diffDays(a,b){ const x=pdate(a), y=pdate(b); if(!x||!y) return null; return Math.max(0, Math.round((y-x)/864e5)); }
+  function norm(s){ return String(s||'').trim(); }
+  function maskZap(z){ z=norm(z).replace(/\D/g,''); if(z.length<6) return norm(z); return z.slice(0,4)+'•'.repeat(Math.max(z.length-6,3))+z.slice(-2); }
+
+  function buildRecords(rows){
+    const out=[], incompletos=[];
+    for(let i=1;i<rows.length;i++){
+      const r=rows[i]; if(!r||!norm(r[COL.ID])) continue;
+      const empresa=norm(r[COL.EMPRESA]), tipo=norm(r[COL.TIPO]);
+      if(!empresa && !tipo){ incompletos.push(norm(r[COL.ID])); continue; }
+      const valid = norm(r[COL.VALID]).toUpperCase();
+      const replica = norm(r[COL.REPLICA]);
+      const externo = /SHEIN|N[ÃA]O RODOU/i.test(replica+' '+norm(r[COL.RELATO]));
+      out.push({
+        id:norm(r[COL.ID]), status:norm(r[COL.STATUS]), abertura:norm(r[COL.ABERTURA]),
+        empresa, ocorr:norm(r[COL.OCORR]), nome:norm(r[COL.NOME]), zap:norm(r[COL.ZAP]),
+        linha:norm(r[COL.LINHA]), ponto:norm(r[COL.PONTO]), tipo:tipo.toUpperCase(),
+        relato:norm(r[COL.RELATO]), evid:norm(r[COL.EVID]), retFret:norm(r[COL.RET_FRET]),
+        valid: valid.includes('NÃO')||valid.includes('NAO') ? 'NÃO PROCEDE' : (valid.includes('PROCEDE')?'PROCEDE':valid),
+        replica, evidFret:norm(r[COL.EVID_FRET]), externo,
+        sla: diffDays(norm(r[COL.ABERTURA]), norm(r[COL.RET_FRET]))
+      });
+    }
+    return {records:out, incompletos};
+  }
+
+  // ---------- estado ----------
+  let ALL=[], INCOMPLETOS=[];
+  const filters={empresa:'__all',tipo:'__all',valid:'__all'};
+  let searchTerm='', sortKey='ocorr', sortDir=1;
+  const TIPO_COLOR={'ATRASO':'#D97706','PONTO DE EMBARQUE NÃO ATENDIDO':'#2563EB','FALTA':'#7C3AED'};
+  const tipoColor = t => TIPO_COLOR[t] || '#475569';
+
+  function setData(rows, live){
+    const b=buildRecords(rows); ALL=b.records; INCOMPLETOS=b.incompletos;
+    buildFilters(); renderAll();
+    const now=new Date().toLocaleTimeString('pt-BR');
+    $('stamp').textContent = 'atualizado '+now;
+    const p=$('pulse'), t=$('pulseTxt');
+    if(live){ p.classList.remove('snap'); t.textContent='AO VIVO'; }
+    else { p.classList.add('snap'); t.textContent='SNAPSHOT'; }
+  }
+
+  function applyFilters(){
+    return ALL.filter(r =>
+      (filters.empresa==='__all'||r.empresa===filters.empresa) &&
+      (filters.tipo==='__all'||r.tipo===filters.tipo) &&
+      (filters.valid==='__all'||r.valid===filters.valid)
+    );
+  }
+
+  // ---------- filtros ----------
+  function buildFilters(){
+    const empresas=[...new Set(ALL.map(r=>r.empresa))].sort();
+    const tipos=[...new Set(ALL.map(r=>r.tipo))].sort();
+    const box=$('filters'); box.innerHTML='';
+    box.appendChild(fgroup('Empresa','empresa',[['__all','Todas',null],...empresas.map(e=>[e,e,null])]));
+    box.appendChild(fgroup('Tipo','tipo',[['__all','Todos',null],...tipos.map(t=>[t,shortTipo(t),tipoColor(t)])]));
+    box.appendChild(fgroup('Validação','valid',[['__all','Todas',null],['PROCEDE','Procede','#DC2626'],['NÃO PROCEDE','Não procede','#059669']]));
+    const clr=document.createElement('button'); clr.className='clear'; clr.textContent='Limpar filtros';
+    clr.onclick=()=>{ filters.empresa=filters.tipo=filters.valid='__all'; buildFilters(); renderAll(); };
+    box.appendChild(clr);
+  }
+  function shortTipo(t){ return t==='PONTO DE EMBARQUE NÃO ATENDIDO'?'Ponto não atendido':t.charAt(0)+t.slice(1).toLowerCase(); }
+  function fgroup(label,key,opts){
+    const g=document.createElement('div'); g.className='fgroup';
+    g.innerHTML=`<div class="flab">${label}</div>`;
+    const chips=document.createElement('div'); chips.className='chips';
+    opts.forEach(([val,txt,color])=>{
+      const c=document.createElement('button'); c.className='chip'+(filters[key]===val?' on':'');
+      c.innerHTML=(color?`<span class="cdot" style="background:${color}"></span>`:'')+txt;
+      c.onclick=()=>{ filters[key]=val; buildFilters(); renderAll(); };
+      chips.appendChild(c);
+    });
+    g.appendChild(chips); return g;
+  }
+
+  // ---------- KPIs ----------
+  function renderKpis(d){
+    const total=d.length;
+    const proc=d.filter(r=>r.valid==='PROCEDE').length;
+    const slas=d.map(r=>r.sla).filter(x=>x!=null);
+    const slaAvg=slas.length?(slas.reduce((a,b)=>a+b,0)/slas.length):0;
+    const linhas=new Set(d.map(r=>r.linha)).size;
+    const pct = total? Math.round(proc/total*100):0;
+    const k=$('kpis');
+    k.innerHTML=[
+      kpi('Ocorrências','',total,`${INCOMPLETOS.length} IDs aguardando preenchimento`),
+      kpi('Procedência','red',pct+'%',`${proc} de ${total} confirmadas como falha`),
+      kpi('SLA médio de retorno','amber',slaAvg.toFixed(1),'dias entre abertura e resposta'),
+      kpi('Linhas afetadas','',linhas,`${new Set(d.map(r=>r.empresa)).size} empresas envolvidas`),
+      kpi('Causa externa (cliente)','violet',d.filter(r=>r.externo).length,'rotas canceladas pela SHEIN')
+    ].join('');
+  }
+  function kpi(lab,cls,val,sub){
+    return `<div class="kpi ${cls}"><div class="klab">${lab}</div>
+      <div class="kval num">${val}</div><div class="ksub">${sub}</div></div>`;
+  }
+
+  // ---------- barras ----------
+  function barRows(map, colorFn, sort=true){
+    let entries=Object.entries(map);
+    if(sort) entries.sort((a,b)=>b[1]-a[1]);
+    const max=Math.max(...entries.map(e=>e[1]),1);
+    return entries.map(([label,val])=>{
+      const w=(val/max*100).toFixed(1), col=colorFn(label);
+      return `<div class="brow"><div class="blabel" title="${esc(label)}">${esc(shortTipo(label))}</div>
+        <div class="btrack"><div class="bfill" data-w="${w}" style="background:${col}"></div></div>
+        <div class="bval">${val}</div></div>`;
+    }).join('') || '<div class="empty">Sem dados</div>';
+  }
+  function countBy(d,key){ const m={}; d.forEach(r=>{const k=r[key]; if(k) m[k]=(m[k]||0)+1;}); return m; }
+
+  function renderTipo(d){ $('byTipo').innerHTML=barRows(countBy(d,'tipo'), tipoColor); }
+  function renderLinha(d){
+    const m=countBy(d,'linha'); const entries=Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    const max=Math.max(...entries.map(e=>e[1]),1);
+    $('byLinha').innerHTML = entries.map(([l,v])=>{
+      const w=(v/max*100).toFixed(1), hot=v===max && v>1;
+      return `<div class="brow"><div class="blabel">Linha ${esc(l)}</div>
+        <div class="btrack"><div class="bfill" data-w="${w}" style="background:${hot?'#DC2626':'#2563EB'}"></div></div>
+        <div class="bval">${v}</div></div>`;
+    }).join('') || '<div class="empty">Sem dados</div>';
+  }
+  function renderEmpresa(d){
+    const emp={};
+    d.forEach(r=>{ emp[r.empresa]=emp[r.empresa]||{p:0,n:0}; if(r.valid==='PROCEDE')emp[r.empresa].p++; else emp[r.empresa].n++; });
+    const entries=Object.entries(emp).sort((a,b)=>(b[1].p+b[1].n)-(a[1].p+a[1].n));
+    const max=Math.max(...entries.map(e=>e[1].p+e[1].n),1);
+    $('byEmpresa').innerHTML = entries.map(([e,v])=>{
+      const tot=v.p+v.n, scale=tot/max;
+      const pw=tot?(v.p/tot*100*scale).toFixed(1):0, nw=tot?(v.n/tot*100*scale).toFixed(1):0;
+      return `<div class="brow"><div class="blabel" title="${esc(e)}">${esc(e)}</div>
+        <div class="btrack stacked">
+          <div class="bfill" data-w="${pw}" style="background:#DC2626" title="Procede: ${v.p}"></div>
+          <div class="bfill" data-w="${nw}" style="background:#059669" title="Não procede: ${v.n}"></div>
+        </div><div class="bval">${tot}</div></div>`;
+    }).join('') || '<div class="empty">Sem dados</div>';
+  }
+
+  // ---------- donut ----------
+  function renderDonut(d){
+    const proc=d.filter(r=>r.valid==='PROCEDE').length;
+    const nproc=d.filter(r=>r.valid==='NÃO PROCEDE').length;
+    const total=proc+nproc||1;
+    const segs=[{l:'Procede',v:proc,c:'#DC2626'},{l:'Não procede',v:nproc,c:'#059669'}];
+    const R=58, C=2*Math.PI*R; let off=0;
+    let circles='';
+    segs.forEach(s=>{
+      const frac=s.v/total, len=frac*C;
+      circles+=`<circle cx="70" cy="70" r="${R}" fill="none" stroke="${s.c}" stroke-width="20"
+        stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}"
+        transform="rotate(-90 70 70)" style="stroke-dashoffset:${C}"></circle>`;
+      off+=len;
+    });
+    $('donut').innerHTML=`<svg class="donut" width="140" height="140" viewBox="0 0 140 140">
+      <circle cx="70" cy="70" r="${R}" fill="none" stroke="#F1F5F9" stroke-width="20"></circle>${circles}
+      <text x="70" y="64" text-anchor="middle" font-family="IBM Plex Mono" font-size="30" font-weight="700" fill="#16202E">${total}</text>
+      <text x="70" y="84" text-anchor="middle" font-size="11" fill="#64748B" font-family="IBM Plex Sans">registros</text></svg>`;
+    $('donutLeg').innerHTML=segs.map(s=>`<div class="leg"><span class="sw" style="background:${s.c}"></span>${s.l}
+      <span class="lv">${s.v} · ${Math.round(s.v/total*100)}%</span></div>`).join('');
+    // anima dasharray do snapshot total -> valor real
+    requestAnimationFrame(()=>{ let acc=0; const cs=$('donut').querySelectorAll('circle'); 
+      for(let i=1;i<cs.length;i++){ const len=segs[i-1].v/total*C; cs[i].style.strokeDashoffset=(-acc); acc+=len; } });
+  }
+
+  // ---------- matriz ----------
+  function renderMatrix(d){
+    const tipos=[...new Set(d.map(r=>r.tipo))];
+    const get=(t,v)=>d.filter(r=>r.tipo===t&&r.valid===v).length;
+    const maxCell=Math.max(...tipos.flatMap(t=>[get(t,'PROCEDE'),get(t,'NÃO PROCEDE')]),1);
+    const cell=(n,base)=>{
+      const a=0.12+0.78*(n/maxCell);
+      return `<div class="cell" style="background:${base}${Math.round(a*255).toString(16).padStart(2,'0')}">${n}<small>${n===1?'caso':'casos'}</small></div>`;
+    };
+    $('matrix').innerHTML=`<div class="matrix">
+      <div class="mhead"><div>Tipo</div><div>Procede</div><div>Não procede</div></div>
+      ${tipos.map(t=>`<div class="mrow"><div class="mlbl">${esc(shortTipo(t))}</div>
+        ${cell(get(t,'PROCEDE'),'#DC2626')}${cell(get(t,'NÃO PROCEDE'),'#059669')}</div>`).join('')}
+    </div>` || '<div class="empty">Sem dados</div>';
+  }
+
+  // ---------- timeline ----------
+  function renderTimeline(d){
+    const m={}; d.forEach(r=>{ const k=r.ocorr; if(k) m[k]=(m[k]||0)+1; });
+    const entries=Object.entries(m).sort((a,b)=>{ const da=pdate(a[0]),db=pdate(b[0]); return (da&&db)?da-db:0; });
+    const max=Math.max(...entries.map(e=>e[1]),1);
+    $('timeline').innerHTML=`<div class="tl">${entries.map(([dt,v])=>{
+      const h=(v/max*100).toFixed(1); const short=dt.slice(0,5);
+      return `<div class="tlcol"><div class="tlval">${v}</div>
+        <div class="tlbar" data-h="${h}" style="background:${v===max?'#DC2626':'#2563EB'}"></div>
+        <div class="tlcap">${short}</div></div>`;
+    }).join('')}</div>` || '<div class="empty">Sem dados</div>';
+  }
+
+  // ---------- insights ----------
+  function renderInsights(d){
+    const li=[]; const total=d.length;
+    if(!total){ $('insights').innerHTML='<li>Nenhum registro no filtro atual.</li>'; return; }
+    // linha mais recorrente
+    const lin=countBy(d,'linha'); const topLin=Object.entries(lin).sort((a,b)=>b[1]-a[1])[0];
+    if(topLin && topLin[1]>1) li.push(['📍',`A <b>linha ${topLin[0]}</b> concentra ${topLin[1]} ocorrências (${Math.round(topLin[1]/total*100)}% do total) — candidata a revisão de itinerário.`]);
+    // tipo com maior procedência
+    const tipos=[...new Set(d.map(r=>r.tipo))];
+    let best=null;
+    tipos.forEach(t=>{ const arr=d.filter(r=>r.tipo===t); const p=arr.filter(r=>r.valid==='PROCEDE').length; const rate=p/arr.length; if(!best||rate>best.rate) best={t,rate,n:arr.length,p}; });
+    if(best) li.push(['⚠️',`<b>${shortTipo(best.t)}</b> tem a maior taxa de procedência: ${Math.round(best.rate*100)}% (${best.p}/${best.n}) — falha mais frequentemente confirmada contra o fretado.`]);
+    // empresa dominante
+    const emp=countBy(d,'empresa'); const topEmp=Object.entries(emp).sort((a,b)=>b[1]-a[1])[0];
+    if(topEmp) li.push(['🏢',`<b>${topEmp[0]}</b> responde por ${topEmp[1]} de ${total} registros (${Math.round(topEmp[1]/total*100)}%).`]);
+    // SLA outlier
+    const withSla=d.filter(r=>r.sla!=null); 
+    if(withSla.length){ const avg=withSla.reduce((a,b)=>a+b.sla,0)/withSla.length; const out=withSla.slice().sort((a,b)=>b.sla-a.sla)[0];
+      if(out.sla>=avg*2 && out.sla>avg+1) li.push(['⏱️',`SLA médio de ${avg.toFixed(1)} dias, mas o registro <b>${out.id}</b> levou ${out.sla} dias — fora da curva.`]);
+      else li.push(['⏱️',`Retorno do fretado em ${avg.toFixed(1)} dias em média.`]); }
+    // causa externa
+    const ext=d.filter(r=>r.externo).length;
+    if(ext) li.push(['🔀',`${ext} ocorrência(s) marcada(s) como procedente são, na verdade, <b>cancelamento do cliente (SHEIN)</b> — não falha do fretado.`]);
+    $('insights').innerHTML=li.map(([ic,tx])=>`<li><span class="ic">${ic}</span><span>${tx}</span></li>`).join('');
+  }
+
+  // ---------- tabela ----------
+  function renderTable(d){
+    let rows=d.slice();
+    if(searchTerm){ const q=searchTerm.toLowerCase();
+      rows=rows.filter(r=>[r.nome,r.linha,r.ponto,r.relato,r.tipo,r.empresa,r.id].join(' ').toLowerCase().includes(q)); }
+    rows.sort((a,b)=>{
+      let av=a[sortKey], bv=b[sortKey];
+      if(sortKey==='ocorr'){ av=pdate(a.ocorr)||0; bv=pdate(b.ocorr)||0; }
+      if(sortKey==='sla'){ av=a.sla??-1; bv=b.sla??-1; }
+      if(sortKey==='id'){ av=+a.id; bv=+b.id; }
+      return (av>bv?1:av<bv?-1:0)*sortDir;
+    });
+    const arrow=k=> sortKey===k?(sortDir>0?' ▲':' ▼'):'';
+    const head=`<thead><tr>
+      <th data-k="id">ID${arrow('id')}</th><th data-k="ocorr">Data${arrow('ocorr')}</th>
+      <th data-k="empresa">Empresa${arrow('empresa')}</th><th>Colaborador</th>
+      <th data-k="linha">Linha${arrow('linha')}</th><th>Tipo</th><th>Validação</th>
+      <th data-k="sla">SLA${arrow('sla')}</th></tr></thead>`;
+    const body = rows.length ? rows.map((r,i)=>{
+      const tcls = r.tipo==='ATRASO'?'t-atraso':r.tipo==='FALTA'?'t-falta':'t-ponto';
+      const vcls = r.valid==='PROCEDE'?'proc':'nproc';
+      const link = /^https?:/.test(r.evidFret)?`<a href="${r.evidFret}" target="_blank" rel="noopener">Abrir evidência ↗</a>`:'—';
+      return `<tr class="main" data-i="${i}">
+        <td class="mono-sm">${esc(r.id)}</td><td class="mono-sm">${esc(r.ocorr)}</td>
+        <td>${esc(r.empresa)}</td><td>${esc(r.nome)}<br><span class="mono-sm" style="color:var(--muted)">${esc(maskZap(r.zap))}</span></td>
+        <td class="mono-sm">${esc(r.linha)}</td>
+        <td><span class="tag ${tcls}">${esc(shortTipo(r.tipo))}</span></td>
+        <td><span class="tag ${vcls}">${r.valid==='PROCEDE'?'Procede':'Não procede'}</span></td>
+        <td class="mono-sm">${r.sla==null?'—':r.sla+'d'}</td></tr>
+        <tr class="detail" id="det-${i}" style="display:none"><td colspan="8"><div class="dwrap">
+          <div><h4>Ponto de embarque</h4><p>${esc(r.ponto||'—')}</p></div>
+          <div><h4>Relato do colaborador</h4><p>${esc(r.relato||'— sem relato —')}</p></div>
+          <div><h4>Réplica do fretado</h4><p>${esc(r.replica||'—')}</p></div>
+          <div><h4>Status / evidência</h4><p>${esc(r.status)}<br>${link}</p></div>
+        </div></td></tr>`;
+    }).join('') : `<tr><td colspan="8" class="empty">Nenhum registro encontrado.</td></tr>`;
+    $('table').innerHTML=head+'<tbody>'+body+'</tbody>';
+    $('tcount').textContent=`${rows.length} registro(s)`;
+    $('table').querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{
+      const k=th.dataset.k; if(sortKey===k) sortDir*=-1; else {sortKey=k; sortDir=1;} renderTable(d); });
+    $('table').querySelectorAll('tr.main').forEach(tr=>tr.onclick=()=>{
+      const det=$('det-'+tr.dataset.i); det.style.display = det.style.display==='none'?'':'none'; });
+  }
+
+  // ---------- render geral ----------
+  function renderAll(){
+    const d=applyFilters();
+    renderKpis(d); renderDonut(d); renderTipo(d); renderLinha(d);
+    renderEmpresa(d); renderMatrix(d); renderTimeline(d); renderInsights(d); renderTable(d);
+    requestAnimationFrame(()=>{
+      document.querySelectorAll('.bfill').forEach(b=>b.style.width=(b.dataset.w||0)+'%');
+      document.querySelectorAll('.tlbar').forEach(b=>b.style.height=(b.dataset.h||0)+'%');
+    });
+  }
+  const esc=s=>String(s??'').replace(/[<>&"]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[m]));
+
+  // ---------- busca ao vivo ----------
+  async function liveFetch(){
+    const url=$('srcUrl').value.trim()||GVIZ;
+    try{
+      const res=await fetch(url,{cache:'no-store'});
+      const txt=await res.text();
+      if(!res.ok || txt.trim().startsWith('<') || !/ID|EMPRESA/i.test(txt.split('\n')[0]||''))
+        throw new Error('fonte indisponível ou privada');
+      setData(parseCSV(txt), true);
+      $('srcNote').textContent='Conectado à planilha ao vivo.';
+    }catch(e){
+      $('srcNote').textContent='Sem acesso ao vivo — exibindo snapshot embutido. Publique a planilha para tempo real.';
+      if(!ALL.length) setData(parseCSV($('seed').textContent), false);
+      else { $('pulse').classList.add('snap'); $('pulseTxt').textContent='SNAPSHOT'; }
+    }
+  }
+
+  // ---------- init ----------
+  $('srcUrl').value=GVIZ;
+  setData(parseCSV($('seed').textContent), false);   // mostra já com snapshot
+  liveFetch();                                        // tenta subir pra ao vivo
+
+  let timer=null;
+  function schedule(){ clearInterval(timer); if($('autoChk').checked) timer=setInterval(liveFetch,30000); }
+  $('autoChk').onchange=schedule; schedule();
+  $('refresh').onclick=liveFetch;
+  $('search').oninput=e=>{ searchTerm=e.target.value; renderTable(applyFilters()); };
+})();
+</script>
+</body>
+</html>

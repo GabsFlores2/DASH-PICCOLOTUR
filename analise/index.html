@@ -27,61 +27,66 @@
   section{margin-top:34px;}
   .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);}
 
-  /* topo */
   .top{background:var(--ink);color:#fff;border-bottom:3px solid var(--accent);}
-  .top .wrap{padding:30px 22px;}
-  .top .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7fa8ff;}
-  .top h1{font-size:clamp(24px,4.4vw,34px);font-weight:700;letter-spacing:-.8px;margin:8px 0 6px;line-height:1.1;}
-  .top .sub{color:#9fb0c9;font-size:14px;max-width:680px;}
+  .top .wrap{padding:22px 22px 14px;}
+  .toprow{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7fa8ff;}
+  .live{margin-left:auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .pulse{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;background:#0B1220;
+    border:1px solid #2a3650;border-radius:999px;padding:7px 13px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:#34D399;animation:beat 1.8s infinite;}
+  .pulse.snap .dot{background:var(--amber);animation:none;} .pulse.snap{color:#fcd9a8;}
+  @keyframes beat{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55)}70%{box-shadow:0 0 0 7px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+  .stamp{font-size:11.5px;color:#9fb0c9;font-family:var(--mono);}
+  .top h1{font-size:clamp(23px,4.2vw,32px);font-weight:700;letter-spacing:-.8px;margin:0 0 6px;line-height:1.1;}
+  .top .sub{color:#9fb0c9;font-size:13.5px;max-width:680px;}
 
-  /* exec */
   .exec{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
-  .find{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);
-    border-left:4px solid var(--accent);}
+  .find{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);border-left:4px solid var(--accent);}
   .find.red{border-left-color:var(--red);} .find.amber{border-left-color:var(--amber);} .find.violet{border-left-color:var(--violet);}
   .find .big{font-size:27px;font-weight:700;letter-spacing:-1px;line-height:1;margin-bottom:6px;}
-  .find .lab{font-size:13px;color:#334155;line-height:1.45;}
-  .find .lab b{color:var(--ink);}
+  .find .lab{font-size:13px;color:#334155;line-height:1.45;} .find .lab b{color:var(--ink);}
 
-  /* callout */
-  .callout{background:linear-gradient(180deg,#fff, #fafbfd);border:1px solid var(--line);border-left:4px solid var(--amber);
+  .callout{background:linear-gradient(180deg,#fff,#fafbfd);border:1px solid var(--line);border-left:4px solid var(--amber);
     border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14px;}
   .callout.key{border-left-color:var(--red);}
   .callout .k{font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--amber);margin-bottom:5px;}
   .callout.key .k{color:var(--red);}
 
-  /* causa-raiz */
   .cause-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;align-items:center;}
   @media(max-width:760px){.cause-grid{grid-template-columns:1fr;}}
   .stack{display:flex;flex-direction:column;gap:9px;}
-  .crow{display:grid;grid-template-columns:160px 1fr 38px;align-items:center;gap:11px;}
+  .crow{display:grid;grid-template-columns:170px 1fr 46px;align-items:center;gap:11px;}
   .clbl{font-size:12.5px;font-weight:600;}
   .ctrack{height:26px;background:#F1F5F9;border-radius:7px;overflow:hidden;}
   .cfill{height:100%;width:0;border-radius:7px;transition:width 1s cubic-bezier(.22,1,.36,1);}
   .cval{font-family:var(--mono);font-size:13px;font-weight:600;text-align:right;}
   .donut circle{transition:stroke-dashoffset 1.1s cubic-bezier(.22,1,.36,1);}
 
-  /* simulador */
-  .sim-head{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:16px;}
+  .audit{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px;}
+  .audit th{text-align:left;padding:9px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:2px solid var(--line);}
+  .audit td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top;}
+  .ctag{display:inline-block;font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px;color:#fff;white-space:nowrap;}
+  .vtag{font-size:11px;font-weight:700;border-radius:5px;padding:2px 7px;}
+  .vtag.p{background:var(--red-s);color:#991B1B;} .vtag.n{background:var(--green-s);color:#065F46;}
+  .why{color:#475569;font-style:italic;}
+
+  .sim-head{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:16px;}
   .toggle{display:flex;align-items:center;gap:9px;background:#F8FAFC;border:1px solid var(--line);border-radius:10px;
     padding:9px 13px;font-size:13px;font-weight:600;cursor:pointer;user-select:none;}
   .toggle input{accent-color:var(--accent);width:16px;height:16px;}
   .simtbl{width:100%;border-collapse:collapse;font-size:13px;}
-  .simtbl th{text-align:left;padding:9px 8px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;
-    color:var(--muted);border-bottom:2px solid var(--line);white-space:nowrap;}
+  .simtbl th{text-align:left;padding:9px 8px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:2px solid var(--line);white-space:nowrap;}
   .simtbl td{padding:9px 8px;border-bottom:1px solid var(--line);}
   .simtbl tr.hot td{background:#FEF2F2;}
-  .simtbl input{width:64px;border:1px solid var(--line2);border-radius:7px;padding:6px 8px;font-family:var(--mono);
-    font-size:13px;text-align:right;outline:none;}
+  .simtbl input{width:64px;border:1px solid var(--line2);border-radius:7px;padding:6px 8px;font-family:var(--mono);font-size:13px;text-align:right;outline:none;}
   .simtbl input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.12);}
-  .rankbadge{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;
-    font-family:var(--mono);font-weight:700;font-size:12px;background:#EEF2F7;color:var(--ink);}
+  .rankbadge{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;font-family:var(--mono);font-weight:700;font-size:12px;background:#EEF2F7;color:var(--ink);}
   .rankbadge.r1{background:var(--red);color:#fff;} .rankbadge.r2{background:var(--amber);color:#fff;}
   .flip{font-family:var(--mono);font-size:12px;font-weight:700;}
   .flip.up{color:var(--red);} .flip.down{color:var(--green);} .flip.same{color:var(--muted);}
   .barmini{height:8px;border-radius:4px;background:var(--accent);width:0;transition:width .9s cubic-bezier(.22,1,.36,1);}
 
-  /* impacto x esforço */
   .quad{position:relative;height:340px;background:
       linear-gradient(0deg,transparent 49.6%,var(--line) 49.6%,var(--line) 50.4%,transparent 50.4%),
       linear-gradient(90deg,transparent 49.6%,var(--line) 49.6%,var(--line) 50.4%,transparent 50.4%);
@@ -90,23 +95,18 @@
   .qlab.tl{top:10px;left:14px;color:var(--green);} .qlab.tr{top:10px;right:14px;color:var(--amber);}
   .qlab.bl{bottom:10px;left:14px;color:var(--muted);} .qlab.br{bottom:10px;right:14px;color:var(--red);}
   .axn{position:absolute;font-size:10.5px;color:var(--muted);font-weight:600;}
-  .dot{position:absolute;transform:translate(-50%,50%);display:flex;align-items:center;gap:7px;}
-  .dot .pt{width:15px;height:15px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.18);}
-  .dot .nm{font-size:11.5px;font-weight:700;background:rgba(255,255,255,.92);border:1px solid var(--line);
-    border-radius:6px;padding:2px 7px;white-space:nowrap;}
+  .dot2{position:absolute;transform:translate(-50%,50%);display:flex;align-items:center;gap:7px;}
+  .dot2 .pt{width:15px;height:15px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+  .dot2 .nm{font-size:11.5px;font-weight:700;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:6px;padding:2px 7px;white-space:nowrap;}
 
-  /* plano tabela */
   .plan{width:100%;border-collapse:collapse;font-size:13px;}
-  .plan th{text-align:left;padding:11px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;
-    color:var(--muted);border-bottom:2px solid var(--line);}
+  .plan th{text-align:left;padding:11px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:2px solid var(--line);}
   .plan td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
   .pri{display:inline-block;font-family:var(--mono);font-weight:700;font-size:11px;border-radius:6px;padding:3px 8px;}
   .pri.p1{background:var(--red-s);color:#991B1B;} .pri.p2{background:var(--amber-s);color:#92400E;} .pri.p3{background:#EEF2F7;color:#475569;}
   .tagmini{font-size:11px;font-weight:700;border-radius:5px;padding:2px 7px;background:#EEF2F7;color:#475569;}
 
-  /* scorecard */
-  .formula{background:#0B1220;color:#dbe4f0;border-radius:12px;padding:16px 18px;font-family:var(--mono);
-    font-size:13px;line-height:1.7;overflow-x:auto;margin:10px 0;}
+  .formula{background:#0B1220;color:#dbe4f0;border-radius:12px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.7;overflow-x:auto;margin:10px 0;}
   .formula .v{color:#7fd1ff;} .formula .o{color:#fca5a5;} .formula .c{color:#86efac;}
   .kpi-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:6px;}
   .kpidef{border:1px solid var(--line);border-radius:11px;padding:14px;background:#fafbfd;}
@@ -117,15 +117,35 @@
   footer{margin-top:40px;color:var(--muted);font-size:11.5px;line-height:1.7;border-top:1px solid var(--line);padding-top:18px;}
   footer b{color:var(--ink);}
   .note{font-size:12px;color:var(--muted);font-style:italic;margin-top:8px;}
+  .srcline{font-size:11px;color:#9fb0c9;font-family:var(--mono);margin-top:4px;}
+
+  /* ---- Nav menu ---- */
+  .nav{display:flex;gap:4px;background:#0B1220;border:1px solid #2a3650;border-radius:10px;padding:4px;}
+  .nav a{font-size:12.5px;font-weight:600;color:#9fb0c9;text-decoration:none;padding:7px 14px;border-radius:7px;
+    transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:7px;}
+  .nav a:hover{color:#fff;background:#16223a;}
+  .nav a.active{background:var(--accent);color:#fff;}
+  .nav a .ni{width:7px;height:7px;border-radius:2px;background:currentColor;opacity:.7;}
 </style>
 </head>
 <body>
 
 <div class="top">
   <div class="wrap">
-    <div class="eyebrow">Análise Operacional · Transporte Fretado</div>
+    <div class="toprow">
+      <div class="eyebrow">Análise Operacional · Transporte Fretado</div>
+      <nav class="nav">
+        <a href="../"><span class="ni"></span>Painel</a>
+        <a href="./" class="active"><span class="ni"></span>Análise & Melhorias</a>
+      </nav>
+      <div class="live">
+        <div class="pulse" id="pulse"><span class="dot"></span><span id="pulseTxt">Conectando…</span></div>
+        <span class="stamp" id="stamp">—</span>
+      </div>
+    </div>
     <h1>Da contagem ao risco: o que os dados realmente dizem</h1>
-    <div class="sub">Reinterpretação dos registros de ocorrências, correção da atribuição de causa e plano de melhorias priorizado. Base: Página1 (A:W) — amostra inicial de 10 ocorrências válidas.</div>
+    <div class="sub">Lê a mesma planilha do painel, ao vivo. Todos os números abaixo — inclusive a classificação de causa — recalculam sozinhos quando a planilha muda.</div>
+    <div class="srcline" id="srcNote">—</div>
   </div>
 </div>
 
@@ -133,24 +153,7 @@
 
   <section>
     <h2>Resumo executivo</h2>
-    <div class="exec">
-      <div class="find red">
-        <div class="big num">~20%</div>
-        <div class="lab">das ocorrências são <b>culpa controlável do fretado</b> — não os 60% de "procedência" do painel. O resto é trânsito, cliente ou desinformação.</div>
-      </div>
-      <div class="find violet">
-        <div class="big num">30%</div>
-        <div class="lab"><b>Falha de comunicação</b> de mudança de ponto, itinerário ou cancelamento. É o maior balde isolado — e quase invisível na métrica atual.</div>
-      </div>
-      <div class="find amber">
-        <div class="big num">Conta ≠ Risco</div>
-        <div class="lab">Ocorrências por linha <b>não ponderam exposição</b>. Sem viagens/passageiros no denominador, a linha movimentada sempre "parece" a pior.</div>
-      </div>
-      <div class="find">
-        <div class="big num">Lote</div>
-        <div class="lab">Quase todas as tratativas fecharam em <b>18/06</b>: processo reativo, em mutirão, sem SLA definido. Um caso levou 9 dias.</div>
-      </div>
-    </div>
+    <div class="exec" id="exec"></div>
   </section>
 
   <section>
@@ -158,28 +161,28 @@
     <div class="card">
       <h3>Por que contar ocorrências engana</h3>
       <p class="lead">O número bruto mistura três coisas que precisam ser separadas para virar decisão:</p>
-      <p><b>Exposição.</b> Uma linha com 3 ocorrências e 120 viagens no período (2,5 por 100) é mais confiável que uma com 1 ocorrência e 20 viagens (5,0 por 100). A contagem mostra a primeira como "pior". O risco real é o inverso. Sem capturar viagens e headcount por linha, qualquer ranking de linha é chute.</p>
-      <p><b>Gravidade.</b> Um <b>atraso</b> custa horas; um <b>ponto não atendido</b> ou <b>falta</b> pode significar o colaborador não chegar ao trabalho — impacto financeiro e de produção muito maior. Tratar tudo como "1 ocorrência" achata essa diferença.</p>
-      <p><b>Atribuição.</b> "Procede/Não procede" é definido pela evidência do <b>próprio fretado</b> (GPS de chegada no GLP). Isso é juiz e réu na mesma pessoa, e ainda joga no mesmo balde falhas do cliente (SHEIN cancelou a rota) e do trânsito. A culpa do fretado sai inflada.</p>
+      <p><b>Exposição.</b> Uma linha com 3 ocorrências e 120 viagens (2,5 por 100) é mais confiável que uma com 1 ocorrência e 20 viagens (5,0 por 100). A contagem aponta a primeira como "pior"; o risco real é o inverso. Sem viagens e headcount por linha, qualquer ranking de linha é chute.</p>
+      <p><b>Gravidade.</b> Um <b>atraso</b> custa horas; um <b>ponto não atendido</b> ou <b>falta</b> pode significar o colaborador não chegar — impacto muito maior. Tratar tudo como "1 ocorrência" achata essa diferença.</p>
+      <p><b>Atribuição.</b> "Procede/Não procede" é definido pela evidência do <b>próprio fretado</b> (GPS no GLP): juiz e réu na mesma pessoa, e ainda mistura falha do cliente (SHEIN) e do trânsito no mesmo balde. A culpa do fretado sai inflada.</p>
       <div class="callout key">
-        <div class="k">O ponto que você levantou</div>
-        A "possibilidade de atraso" de cada linha depende de quanto ela roda e em que condições. Ocorrência absoluta sem essa ponderação não diz qual linha está pior — diz qual linha é maior. O simulador abaixo deixa você corrigir isso na prática.
+        <div class="k">O ponto levantado</div>
+        A possibilidade de atraso de cada linha depende de quanto ela roda. Ocorrência absoluta sem ponderar exposição não diz qual linha está pior — diz qual é maior. O simulador da seção 3 corrige isso na prática.
       </div>
     </div>
   </section>
 
   <section>
-    <h2>2 · Diagnóstico por causa-raiz</h2>
+    <h2>2 · Diagnóstico por causa-raiz <span style="font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0">· classificação automática e auditável</span></h2>
     <div class="card">
-      <h3>Reclassificando os 10 registros pelo que de fato aconteceu</h3>
-      <p class="lead">Lendo relato + réplica de cada caso, a foto muda completamente. Esta é uma proposta de reclassificação — revisável caso a caso.</p>
+      <h3>O que de fato aconteceu em cada registro</h3>
+      <p class="lead">Cada caso é classificado por regra transparente a partir do texto de relato e réplica. A tabela mostra o gatilho de cada decisão — revise e corrija o que discordar. <b>Assim que existir uma coluna de causa-raiz na planilha, a página passa a ler ela em vez de inferir.</b></p>
       <div class="cause-grid">
         <div class="stack" id="causeBars"></div>
         <div style="display:flex;justify-content:center"><div id="causeDonut"></div></div>
       </div>
-      <div class="callout">
-        <div class="k">Leitura</div>
-        Só <b>2 casos</b> (linha 1000, atraso operacional; linha 1008, veículo acima da velocidade no ponto) são falha que o fretado controla diretamente. <b>3 casos</b> são pessoas que ficaram no ponto errado / esperando ônibus cancelado por <b>falta de aviso</b>. O dinheiro de melhoria deveria ir para comunicação antes de ir para multa de fretado.
+      <div class="callout" id="causeRead"></div>
+      <div style="overflow-x:auto;margin-top:8px">
+        <table class="audit" id="auditTbl"></table>
       </div>
     </div>
   </section>
@@ -188,16 +191,14 @@
     <h2>3 · Simulador de índice de risco ponderado</h2>
     <div class="card">
       <h3>Ajuste a exposição e veja o ranking das linhas virar</h3>
-      <p class="lead">Edite as <b>viagens no período</b> de cada linha (os valores abaixo são <b>ilustrativos</b> — troque pelos reais). Ligue os pesos e observe como a "pior linha" muda quando você sai da contagem pura.</p>
+      <p class="lead">Edite as <b>viagens no período</b> de cada linha (valores <b>ilustrativos</b> — troque pelos reais). Ligue os pesos e observe a "pior linha" mudar quando você sai da contagem pura. A coluna <b>vs contagem</b> mostra quantas posições cada linha sobe ou desce.</p>
       <div class="sim-head">
         <label class="toggle"><input type="checkbox" id="tgGrav" checked> Ponderar por gravidade</label>
         <label class="toggle"><input type="checkbox" id="tgCausa" checked> Descontar causa externa (cliente / trânsito)</label>
         <label class="toggle"><input type="checkbox" id="tgRec" checked> Ponderar recorrência</label>
       </div>
-      <div style="overflow-x:auto">
-        <table class="simtbl" id="simTbl"></table>
-      </div>
-      <p class="note">Severidade: atraso 1,5 · ponto não atendido 3 · falta 3. Causa externa entra com peso reduzido; não-procedência mantém peso de atendimento (custa tratativa mesmo sem culpa do fretado).</p>
+      <div style="overflow-x:auto"><table class="simtbl" id="simTbl"></table></div>
+      <p class="note">Severidade: atraso 1,5 · ponto não atendido 3 · falta 3. Causa externa entra com peso reduzido; não-procedência mantém peso de atendimento.</p>
     </div>
   </section>
 
@@ -205,11 +206,11 @@
     <h2>4 · Tema sistêmico: comunicação de mudanças</h2>
     <div class="card">
       <h3>O custo invisível das ocorrências "improcedentes"</h3>
-      <p class="lead">Três registros viraram "não procede" porque o veículo atendeu dentro do padrão — mas o colaborador genuinamente não sabia da mudança de ponto/itinerário ou do cancelamento. Do ponto de vista do operador, "não procede"; do ponto de vista do negócio, <b>houve custo real</b>: gente esperando à toa, estresse, risco de atraso na produção.</p>
-      <p>Os relatos apontam o mesmo padrão: ponto alterado sem aviso (20260384), dúvida se o ônibus mudou (20260385), ônibus que "não passou" mas estava no itinerário novo (20260389), e rotas canceladas pela SHEIN sem ninguém avisar quem estava no ponto (20260382, 20260383). Cinco dos dez casos têm <b>informação</b> — não condução — na raiz.</p>
+      <p class="lead" id="commsLead"></p>
+      <p>O padrão se repete: ponto alterado sem aviso, dúvida se o ônibus mudou, ônibus que "não passou" mas estava no itinerário novo, rotas canceladas pelo cliente sem ninguém avisar quem estava no ponto. A raiz é <b>informação</b>, não condução.</p>
       <div class="callout">
         <div class="k">Recomendação central</div>
-        Protocolo de notificação de mudança: toda alteração de ponto, itinerário ou cancelamento dispara aviso no grupo <b>com confirmação de leitura</b> e antecedência mínima. Métrica nova: "% de mudanças comunicadas com antecedência". Isso ataca 30–50% das ocorrências sem tocar no contrato do fretado.
+        Protocolo de notificação de mudança: toda alteração de ponto, itinerário ou cancelamento dispara aviso no grupo <b>com confirmação de leitura</b> e antecedência mínima. Métrica nova: "% de mudanças comunicadas a tempo". Ataca o maior balde sem tocar no contrato do fretado.
       </div>
     </div>
   </section>
@@ -218,20 +219,20 @@
     <h2>5 · SLA e processo de tratativa</h2>
     <div class="card">
       <h3>Reativo e em lote</h3>
-      <p class="lead">O retorno do fretado leva em média ~2,5 dias, mas o registro 20260381 levou <b>9 dias</b> — fora da curva. E a maioria das validações fechou no mesmo dia (18/06), sinal de tratativa em mutirão, não contínua. Sem meta de SLA, o tempo de resposta fica à mercê da agenda de quem tira o lote.</p>
-      <p>Recomendações: definir <b>SLA de resposta de 48h</b>, marcar violações automaticamente, e preencher a coluna SLA (hoje vazia) via cálculo data de abertura → retorno. Tratativa contínua em vez de mutirão reduz o caso de 9 dias.</p>
+      <p class="lead" id="slaLead"></p>
+      <p>Recomendações: definir <b>SLA de resposta de 48h</b>, marcar violações automaticamente e preencher a coluna SLA (hoje vazia) via cálculo abertura → retorno. Tratativa contínua, não mutirão.</p>
     </div>
   </section>
 
   <section>
     <h2>6 · Qualidade dos dados</h2>
     <div class="card">
-      <h3>Higiene que destrava tudo o resto</h3>
-      <p class="lead">Nenhuma análise fica sólida sobre dado sujo. Achados na própria planilha:</p>
-      <p>Cabeçalho com erro de digitação (<span class="num">DATA_DA _CORRENCIA</span>); um registro com <b>ID literal "ID"</b> no lugar do número; um caso <b>sem relato</b> que foi julgado por ausência de informação (20260388); coluna <b>SLA vazia</b>; status ambíguo (CONCLUIDO vs CONCLUIDO EMPRESA sem critério claro); telefones em formatos diferentes e um DDD 73 (Bahia) no meio — possível erro de digitação. Cada um desses vira ruído nos KPIs.</p>
+      <h3>Higiene que destrava o resto</h3>
+      <p class="lead">Nenhuma análise fica sólida sobre dado sujo. Achados recorrentes na planilha:</p>
+      <p>Cabeçalho com erro de digitação (<span class="num">DATA_DA _CORRENCIA</span>); registros sem relato julgados por ausência de informação; coluna <b>SLA vazia</b>; status ambíguo (CONCLUIDO vs CONCLUIDO EMPRESA); telefones em formatos diferentes e DDDs de outros estados — possíveis erros de digitação. Cada um vira ruído nos KPIs.</p>
       <div class="callout">
         <div class="k">Ação</div>
-        Validação no formulário: relato obrigatório, listas suspensas para status/tipo/empresa, máscara de telefone, e uma coluna nova de <b>causa-raiz</b> (fretado / cliente / trânsito / desinformação / colaborador) — sem ela, a atribuição continua distorcida.
+        Validação no formulário: relato obrigatório, listas suspensas para status/tipo/empresa, máscara de telefone e a coluna nova de <b>causa-raiz</b> (fretado / cliente / trânsito / desinformação / colaborador). Sem ela, a atribuição depende de inferência.
       </div>
     </div>
   </section>
@@ -245,26 +246,24 @@
         <span class="qlab bl">Encaixe</span><span class="qlab br">Reavaliar</span>
         <span class="axn" style="left:50%;bottom:4px;transform:translateX(-50%)">→ mais esforço</span>
         <span class="axn" style="left:4px;top:50%;transform:translateY(-50%) rotate(-90deg);transform-origin:left">→ mais impacto</span>
-        <!-- dots: left% = effort, bottom% = impact -->
-        <div class="dot" style="left:18%;bottom:82%"><span class="pt" style="background:var(--red)"></span><span class="nm">Causa-raiz (coluna)</span></div>
-        <div class="dot" style="left:30%;bottom:88%"><span class="pt" style="background:var(--red)"></span><span class="nm">Aviso de mudança</span></div>
-        <div class="dot" style="left:46%;bottom:80%"><span class="pt" style="background:var(--red)"></span><span class="nm">Capturar exposição</span></div>
-        <div class="dot" style="left:22%;bottom:58%"><span class="pt" style="background:var(--amber)"></span><span class="nm">SLA 48h</span></div>
-        <div class="dot" style="left:26%;bottom:48%"><span class="pt" style="background:var(--amber)"></span><span class="nm">Validação de form</span></div>
-        <div class="dot" style="left:40%;bottom:62%"><span class="pt" style="background:var(--amber)"></span><span class="nm">Índice de risco</span></div>
-        <div class="dot" style="left:82%;bottom:78%"><span class="pt" style="background:var(--accent)"></span><span class="nm">Telemetria GPS</span></div>
+        <div class="dot2" style="left:18%;bottom:82%"><span class="pt" style="background:var(--red)"></span><span class="nm">Causa-raiz (coluna)</span></div>
+        <div class="dot2" style="left:30%;bottom:88%"><span class="pt" style="background:var(--red)"></span><span class="nm">Aviso de mudança</span></div>
+        <div class="dot2" style="left:46%;bottom:80%"><span class="pt" style="background:var(--red)"></span><span class="nm">Capturar exposição</span></div>
+        <div class="dot2" style="left:22%;bottom:58%"><span class="pt" style="background:var(--amber)"></span><span class="nm">SLA 48h</span></div>
+        <div class="dot2" style="left:26%;bottom:48%"><span class="pt" style="background:var(--amber)"></span><span class="nm">Validação de form</span></div>
+        <div class="dot2" style="left:40%;bottom:62%"><span class="pt" style="background:var(--amber)"></span><span class="nm">Índice de risco</span></div>
+        <div class="dot2" style="left:82%;bottom:78%"><span class="pt" style="background:var(--accent)"></span><span class="nm">Telemetria GPS</span></div>
       </div>
-
       <div style="overflow-x:auto;margin-top:22px">
         <table class="plan">
           <thead><tr><th>Pri.</th><th>Ação</th><th>O que resolve</th><th>Dado a capturar</th><th>Esforço</th></tr></thead>
           <tbody>
             <tr><td><span class="pri p1">P1</span></td><td><b>Coluna de causa-raiz</b></td><td>Para de inflar culpa do fretado; separa cliente/trânsito/comunicação</td><td>Categoria por ocorrência</td><td><span class="tagmini">Baixo</span></td></tr>
-            <tr><td><span class="pri p1">P1</span></td><td><b>Protocolo de aviso de mudança</b> com confirmação</td><td>Ataca os ~30% de ocorrências por desinformação</td><td>% mudanças avisadas a tempo</td><td><span class="tagmini">Médio</span></td></tr>
-            <tr><td><span class="pri p1">P1</span></td><td><b>Capturar exposição</b> (viagens e headcount por linha)</td><td>Permite taxa por 100 viagens; corrige ranking de linhas</td><td>Viagens/dia e nº de passageiros por linha</td><td><span class="tagmini">Médio</span></td></tr>
-            <tr><td><span class="pri p2">P2</span></td><td><b>Meta de SLA 48h</b> + marcação de violação</td><td>Tira a tratativa do mutirão; mata o caso de 9 dias</td><td>Data de abertura → retorno (coluna SLA)</td><td><span class="tagmini">Baixo</span></td></tr>
-            <tr><td><span class="pri p2">P2</span></td><td><b>Validação no formulário</b> (relato obrigatório, listas, máscara)</td><td>Limpa o ruído que distorce todos os KPIs</td><td>—</td><td><span class="tagmini">Baixo</span></td></tr>
-            <tr><td><span class="pri p2">P2</span></td><td><b>Índice de risco ponderado</b> por linha</td><td>Prioriza onde auditar; foca em risco, não em volume</td><td>Depende de exposição + causa</td><td><span class="tagmini">Médio</span></td></tr>
+            <tr><td><span class="pri p1">P1</span></td><td><b>Protocolo de aviso de mudança</b> com confirmação</td><td>Ataca as ocorrências por desinformação</td><td>% mudanças avisadas a tempo</td><td><span class="tagmini">Médio</span></td></tr>
+            <tr><td><span class="pri p1">P1</span></td><td><b>Capturar exposição</b> (viagens e headcount por linha)</td><td>Permite taxa por 100 viagens; corrige ranking</td><td>Viagens/dia e passageiros por linha</td><td><span class="tagmini">Médio</span></td></tr>
+            <tr><td><span class="pri p2">P2</span></td><td><b>Meta de SLA 48h</b> + marcação de violação</td><td>Tira a tratativa do mutirão; mata o caso fora da curva</td><td>Abertura → retorno (coluna SLA)</td><td><span class="tagmini">Baixo</span></td></tr>
+            <tr><td><span class="pri p2">P2</span></td><td><b>Validação no formulário</b></td><td>Limpa o ruído que distorce os KPIs</td><td>—</td><td><span class="tagmini">Baixo</span></td></tr>
+            <tr><td><span class="pri p2">P2</span></td><td><b>Índice de risco ponderado</b> por linha</td><td>Prioriza onde auditar; foca em risco, não volume</td><td>Exposição + causa</td><td><span class="tagmini">Médio</span></td></tr>
             <tr><td><span class="pri p3">P3</span></td><td><b>Telemetria GPS independente</b></td><td>Tira o fretado de juiz e réu na validação</td><td>Posição/horário por viagem (fonte neutra)</td><td><span class="tagmini">Alto</span></td></tr>
           </tbody>
         </table>
@@ -276,7 +275,6 @@
     <h2>8 · Scorecard proposto</h2>
     <div class="card">
       <h3>Trocar contagem por taxa ponderada</h3>
-      <p class="lead">O índice que responde à sua pergunta — ocorrência ponderada por gravidade e causa, dividida pela exposição:</p>
       <div class="formula">
         <span class="v">Risco_linha</span> = <span class="o">Σ</span>( gravidade <span class="o">×</span> peso_causa <span class="o">×</span> recorrência ) <span class="o">÷</span> exposição <span class="o">×</span> 100<br>
         <span class="c">// gravidade: atraso 1,5 · ponto 3 · falta 3</span><br>
@@ -285,139 +283,199 @@
         <span class="c">// exposição: viagens da linha no período</span>
       </div>
       <div class="kpi-list">
-        <div class="kpidef"><div class="nm">Taxa de falha do fretado</div><div class="ds">Procedentes atribuíveis ao fretado ÷ viagens × 100. Exclui cliente e trânsito.</div><div class="tgt">meta: queda mês a mês</div></div>
+        <div class="kpidef"><div class="nm">Taxa de falha do fretado</div><div class="ds">Procedentes do fretado ÷ viagens × 100. Exclui cliente e trânsito.</div><div class="tgt">meta: queda mês a mês</div></div>
         <div class="kpidef"><div class="nm">Índice de risco por linha</div><div class="ds">Fórmula acima. Ordena onde auditar primeiro.</div><div class="tgt">watchlist: top 3</div></div>
-        <div class="kpidef"><div class="nm">% mudanças comunicadas a tempo</div><div class="ds">Proxy direto do maior problema sistêmico atual.</div><div class="tgt">meta: ≥ 95%</div></div>
-        <div class="kpidef"><div class="nm">SLA de resposta</div><div class="ds">% de tratativas respondidas em até 48h.</div><div class="tgt">meta: ≥ 90%</div></div>
+        <div class="kpidef"><div class="nm">% mudanças comunicadas a tempo</div><div class="ds">Proxy do maior problema sistêmico atual.</div><div class="tgt">meta: ≥ 95%</div></div>
+        <div class="kpidef"><div class="nm">SLA de resposta</div><div class="ds">% de tratativas em até 48h.</div><div class="tgt">meta: ≥ 90%</div></div>
       </div>
     </div>
   </section>
 
   <footer>
-    <b>Metodologia e limites.</b> A reclassificação de causa-raiz é interpretação dos campos de relato e réplica dos 10 registros e deve ser revisada caso a caso. Os valores de exposição no simulador são <b>ilustrativos</b> — substitua pelos reais para obter taxas válidas. Com apenas 10 ocorrências, percentuais indicam tendência, não estatística estável: as conclusões ganham robustez à medida que a base cresce. Pesos de gravidade e causa são pontos de partida e devem ser calibrados com a operação.
+    <b>Metodologia e limites.</b> Esta página lê a mesma planilha do painel ao vivo; se a fonte estiver indisponível, usa um snapshot embutido (sinalizado no topo). A classificação de causa é por regra de texto, transparente e revisável na tabela da seção 2 — não substitui uma coluna de causa-raiz preenchida pela operação. Os valores de exposição no simulador são <b>ilustrativos</b>. Com poucos registros, percentuais indicam tendência, não estatística estável.
   </footer>
 </div>
 
+<script type="application/csv" id="seed">
+ID,STATUS,DATA_ABERTURA,EMPRESA,DATA_DA _CORRENCIA,NOME_COLABORADOR,WHATSAPP,LINHA FRETADO,PONTO DE EMBARQUE,WHAREHOUSE,TIPO DE OCORRENCIA,BREVE RELATO,EVIDENCIA,DATA RETORNO FRETADO,VALIDAÇÃO,REPLICA,EVIDENCIA FRETADO
+20260378,CONCLUIDO,02/06/2026,RANDSTAD,01/06/2026,FRANCIELLEN SANTOS DE SOUSA,11960368591,2004,Ponto4- Maria do socorro Silva e bezerra n395- jardim nova cidade,,ATRASO,"O fretado atrasou por conta do trânsito no início da rota, por conta disso, dei início ao meu trabalho as 15h",CLIQUE AQUI,03/06/2026,PROCEDE,"A INFORMAÇÃO É PROCEDENTE, DEVIDO AO INTENSO FLUXO DE TRANSITO DEVIDO A UM ACIDENTE NA REGIÃO DA JUSCELINO, O VEÍCULO CHEGOU NO GLP AS 14:39",link
+20260380,CONCLUIDO EMPRESA,06/06/2026,MANPOWER,06/06/2026,Douglas de Santana,11961501807,1000,Padaria pão nosso 2,A,ATRASO,"Não bati o ponto , pq cheguei atrasado por causa do feriado, e quando fosse assim, não era pra bate",,09/06/2026,PROCEDE,"A INFORMAÇÃO É PROCEDENTE, VEÍCULO CHEGOU NO GLP 05:47",link
+20260381,CONCLUIDO EMPRESA,06/06/2026,MANPOWER,06/06/2026,Pamela mauescki,11959338489,1008,Rod Afonso de Souza Castellanos 1713,A,PONTO DE EMBARQUE NÃO ATENDIDO,"Passou no ponto e NN parou ,veículo sem identificação e motorista debochou quando eu chamei ele",,15/06/2026,PROCEDE,"A INFORMAÇÃO É PROCEDENTE, O VEÍCULO PASSOU A CIMA DA VELOCIDADE DE ATENDIMENTO NA REGIÃO DO PONTO",link
+20260383,CONCLUIDO EMPRESA,15/06/2026,MANPOWER,13/06/2026,Matheus Justino Nunes,11999147693,2007,Ponto de Ônibus - Casteluche,A,PONTO DE EMBARQUE NÃO ATENDIDO,Fretado passou no ponto antigo de 11/06. Itinerário não bate com trajeto e o ponto deve ser alterado,,18/06/2026,NÃO PROCEDE,"A INFORMAÇÃO NÃO PROCEDE, VEÍCULO ATENDEU O PONTO DENTRO DO PADRÃO QUE CONSTA NO ITINERÁRIO DA LINHA",link
+20260384,CONCLUIDO,17/06/2026,RANDSTAD,13/06/2026,FABRICIO DE LIMA,11954702538,2000,GRU Av Armando Bei,,FALTA,O fretado mudou não avisarão no grupo e eu fiquei em dúvida se era o meu ônibus,CLIQUE AQUI,18/06/2026,NÃO PROCEDE,NÃO HOUVE ALTERAÇÃO DA LINHA 2000 NO ULTIMO MÊS.,---
+20260382,CONCLUIDO,15/06/2026,AMERICA RH,14/06/2026,CLAUDINEI XAVIER DE BRITO,11 99435-2198,3004,Reylar supermercados,A,PONTO DE EMBARQUE NÃO ATENDIDO,"Tô aq em frente o mercado Reylar, mas até agora não passou o fretado",,16/06/2026,PROCEDE,FRETADO NÃO RODOU NO DIA 14 CONFORME SOLICITAÇÃO DA SHEIN.,---
+20260385,CONCLUIDO,17/06/2026,RANDSTAD,15/06/2026,JANAINA OLIVEIRA RAMOS,11917846492,2007,Ponto 19,,ATRASO,Fretado atrasou por conta do trânsito intenso.,CLIQUE AQUI,18/06/2026,PROCEDE,"A INFORMAÇÃO É PROCEDENTE, VEÍCULO CHEGOU NO GLP 14:23",link
+20260386,CONCLUIDO EMPRESA,16/06/2026,MANPOWER,15/06/2026,Lidiane Alves de Oliveira Santos,11965847638,2007,9,A,PONTO DE EMBARQUE NÃO ATENDIDO,,,18/06/2026,NÃO PROCEDE,NÃO HÁ INFORMAÇÃO NO CAMPO DO RELATO,---
+20260388,CONCLUIDO EMPRESA,17/06/2026,MANPOWER,17/06/2026,Victoria Brenda benigno de sales gomes,11985117986,4,Em frente ao mercado carvalho,A,PONTO DE EMBARQUE NÃO ATENDIDO,Fiquei esperando o fretado para integração mas ele não passou no ponto,,18/06/2026,NÃO PROCEDE,"A INFORMAÇÃO NÃO PROCEDE, VEÍCULO ATENDEU O PONTO DENTRO DO PADRÃO NO HORARIO DO ITINERÁRIO",link
+</script>
+
 <script>
 (() => {
+  const SHEET_ID='1VA6LtvzV29bTf-vn3SagS4i__uWqOMRgtgZ_1NPAYgM';
+  const GVIZ=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Página1`;
   const $=id=>document.getElementById(id);
 
-  // ---- ocorrências (mini-modelo derivado dos 10 registros) ----
-  const OCC=[
-    {id:'20260378',linha:'2004',tipo:'ATRASO',proc:true, causa:'TRANSITO'},
-    {id:'20260380',linha:'1000',tipo:'ATRASO',proc:true, causa:'FRETADO'},
-    {id:'20260381',linha:'1008',tipo:'PONTO', proc:true, causa:'FRETADO'},
-    {id:'20260382',linha:'3004',tipo:'PONTO', proc:true, causa:'CLIENTE'},
-    {id:'20260383',linha:'3000',tipo:'PONTO', proc:true, causa:'CLIENTE'},
-    {id:'20260384',linha:'2007',tipo:'PONTO', proc:false,causa:'DESINFORMACAO'},
-    {id:'20260385',linha:'2000',tipo:'FALTA', proc:false,causa:'DESINFORMACAO'},
-    {id:'20260386',linha:'2007',tipo:'ATRASO',proc:true, causa:'TRANSITO'},
-    {id:'20260388',linha:'2007',tipo:'PONTO', proc:false,causa:'INDETERMINADO'},
-    {id:'20260389',linha:'4',   tipo:'PONTO', proc:false,causa:'DESINFORMACAO'},
-  ];
-  const CAUSA_META={
-    FRETADO:{l:'Fretado (controlável)',c:'#DC2626'},
-    DESINFORMACAO:{l:'Desinformação / comunicação',c:'#7C3AED'},
-    CLIENTE:{l:'Cliente (SHEIN)',c:'#2563EB'},
-    TRANSITO:{l:'Trânsito (externo)',c:'#D97706'},
-    INDETERMINADO:{l:'Dado faltante',c:'#94A3B8'},
-  };
+  function parseCSV(text){
+    const rows=[]; let row=[],f='',q=false; text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+    for(let i=0;i<text.length;i++){ const c=text[i];
+      if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+      else{ if(c==='"')q=true; else if(c===','){row.push(f);f='';} else if(c==='\n'){row.push(f);rows.push(row);row=[];f='';} else f+=c; } }
+    if(f.length||row.length){row.push(f);rows.push(row);} return rows;
+  }
+  const COL={ID:0,STATUS:1,ABERTURA:2,EMPRESA:3,OCORR:4,NOME:5,ZAP:6,LINHA:7,PONTO:8,WH:9,TIPO:10,RELATO:11,EVID:12,RET_FRET:13,VALID:14,REPLICA:15};
+  const norm=s=>String(s||'').trim();
+  const pdate=s=>{const m=String(s||'').trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);return m?new Date(+m[3],+m[2]-1,+m[1]):null;};
+  const diffDays=(a,b)=>{const x=pdate(a),y=pdate(b);return (x&&y)?Math.max(0,Math.round((y-x)/864e5)):null;};
+  const esc=s=>String(s??'').replace(/[<>&"]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[m]));
 
-  // ---- causa-raiz: barras + donut ----
+  function classify(r){
+    const txt=(r.replica+' '+r.relato).toLowerCase();
+    if(/shein|n[ãa]o rodou|cancel/.test(txt)) return {causa:'CLIENTE', why:'cliente cancelou a rota'};
+    if(/tr[âa]nsito|acidente|fluxo de tr/.test(txt)) return {causa:'TRANSITO', why:'trânsito / acidente'};
+    if(r.proc) return {causa:'FRETADO', why:'falha confirmada do fretado'};
+    if(!r.relato || /n[ãa]o h[áa] informa|sem relato/.test(txt)) return {causa:'INDETERMINADO', why:'relato ausente'};
+    if(/itiner[áa]r|ponto.*(antig|mud|alter)|n[ãa]o avis|mudou|dentro do padr[ãa]o|d[úu]vida|n[ãa]o passou|alterad/.test(txt)) return {causa:'DESINFORMACAO', why:'mudança/itinerário não comunicado'};
+    return {causa:'INDETERMINADO', why:'sem classificação clara'};
+  }
+  const CAUSA={FRETADO:{l:'Fretado (controlável)',c:'#DC2626'},DESINFORMACAO:{l:'Desinformação / comunicação',c:'#7C3AED'},
+    CLIENTE:{l:'Cliente (cancelamento)',c:'#2563EB'},TRANSITO:{l:'Trânsito (externo)',c:'#D97706'},INDETERMINADO:{l:'Dado faltante',c:'#94A3B8'}};
+  const tipoKey=t=>{t=String(t||'').toUpperCase(); if(t.includes('PONTO'))return'PONTO'; if(t.includes('FALTA'))return'FALTA'; if(t.includes('ATRASO'))return'ATRASO'; return t||'OUTRO';};
+  const shortT=t=>{t=String(t||'').toUpperCase(); return t.includes('PONTO')?'Ponto não atendido':t.charAt(0)+t.slice(1).toLowerCase();};
+
+  function build(rows){
+    const out=[];
+    for(let i=1;i<rows.length;i++){ const r=rows[i]; if(!r||!norm(r[COL.ID]))continue;
+      const empresa=norm(r[COL.EMPRESA]),tipo=norm(r[COL.TIPO]); if(!empresa&&!tipo)continue;
+      const valid=norm(r[COL.VALID]).toUpperCase();
+      const rec={id:norm(r[COL.ID]),empresa,linha:norm(r[COL.LINHA]),tipo:tipo.toUpperCase(),tk:tipoKey(tipo),
+        relato:norm(r[COL.RELATO]),replica:norm(r[COL.REPLICA]),
+        valid: valid.includes('NÃO')||valid.includes('NAO')?'NÃO PROCEDE':(valid.includes('PROCEDE')?'PROCEDE':valid),
+        proc: valid.includes('PROCEDE')&&!(valid.includes('NÃO')||valid.includes('NAO')),
+        sla:diffDays(norm(r[COL.ABERTURA]),norm(r[COL.RET_FRET]))};
+      const cz=classify(rec); rec.causa=cz.causa; rec.why=cz.why; out.push(rec);
+    }
+    return out;
+  }
+
+  let DATA=[];
+  const EXPOSURE={}; const DEFAULT_EXP={'2004':60,'1000':40,'1008':20,'3004':30,'3000':30,'2007':120,'2000':80,'4':25};
+  function expFor(l){ if(EXPOSURE[l]===undefined) EXPOSURE[l]=DEFAULT_EXP[l]||50; return EXPOSURE[l]; }
+  function pct(n,t){ return t?Math.round(n/t*100):0; }
+
+  function setData(rows, live){
+    DATA=build(rows);
+    renderExec(); renderCause(); renderSim(); renderComms(); renderSLA();
+    $('stamp').textContent='atualizado '+new Date().toLocaleTimeString('pt-BR');
+    const p=$('pulse');
+    if(live){ p.classList.remove('snap'); $('pulseTxt').textContent='AO VIVO'; $('srcNote').textContent='Fonte: planilha ao vivo (Página1).'; }
+    else { p.classList.add('snap'); $('pulseTxt').textContent='SNAPSHOT'; $('srcNote').textContent='Sem acesso ao vivo — snapshot embutido.'; }
+  }
+
+  function renderExec(){
+    const t=DATA.length;
+    const cc={}; DATA.forEach(r=>cc[r.causa]=(cc[r.causa]||0)+1);
+    const fret=cc.FRETADO||0, desinf=cc.DESINFORMACAO||0;
+    const slas=DATA.map(r=>r.sla).filter(x=>x!=null);
+    const avg=slas.length?(slas.reduce((a,b)=>a+b,0)/slas.length):0;
+    $('exec').innerHTML=[
+      `<div class="find red"><div class="big num">${pct(fret,t)}%</div><div class="lab">das ocorrências são <b>culpa controlável do fretado</b> (${fret} de ${t}) — bem abaixo da procedência bruta. O resto é trânsito, cliente ou desinformação.</div></div>`,
+      `<div class="find violet"><div class="big num">${pct(desinf,t)}%</div><div class="lab"><b>Falha de comunicação</b> de mudança de ponto, itinerário ou cancelamento (${desinf} de ${t}). Maior balde isolado, quase invisível na métrica atual.</div></div>`,
+      `<div class="find amber"><div class="big num">Conta ≠ Risco</div><div class="lab">Ocorrências por linha <b>não ponderam exposição</b>. Sem viagens no denominador, a linha movimentada sempre "parece" a pior.</div></div>`,
+      `<div class="find"><div class="big num">${avg.toFixed(1)}d</div><div class="lab">SLA médio de retorno do fretado. As tratativas tendem a fechar em mutirão, sem meta definida.</div></div>`
+    ].join('');
+  }
+
   function renderCause(){
-    const counts={}; OCC.forEach(o=>counts[o.causa]=(counts[o.causa]||0)+1);
-    const order=['FRETADO','DESINFORMACAO','CLIENTE','TRANSITO','INDETERMINADO'];
-    const total=OCC.length, max=Math.max(...Object.values(counts));
-    $('causeBars').innerHTML=order.map(k=>{
-      const v=counts[k]||0, m=CAUSA_META[k];
+    const counts={}; DATA.forEach(r=>counts[r.causa]=(counts[r.causa]||0)+1);
+    const order=['FRETADO','DESINFORMACAO','CLIENTE','TRANSITO','INDETERMINADO'].filter(k=>counts[k]);
+    const total=DATA.length||1, max=Math.max(...order.map(k=>counts[k]),1);
+    $('causeBars').innerHTML=order.map(k=>{const v=counts[k],m=CAUSA[k];
       return `<div class="crow"><div class="clbl">${m.l}</div>
         <div class="ctrack"><div class="cfill" data-w="${(v/max*100).toFixed(1)}" style="background:${m.c}"></div></div>
-        <div class="cval">${v} · ${Math.round(v/total*100)}%</div></div>`;
-    }).join('');
-    // donut
+        <div class="cval">${v} · ${pct(v,total)}%</div></div>`;}).join('');
     const R=58,C=2*Math.PI*R; let acc=0,circ='';
-    order.forEach(k=>{ const v=counts[k]||0; if(!v) return; const len=v/total*C;
-      circ+=`<circle cx="70" cy="70" r="${R}" fill="none" stroke="${CAUSA_META[k].c}" stroke-width="22"
-        stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-acc}" transform="rotate(-90 70 70)"
-        style="stroke-dashoffset:${C}"></circle>`; acc+=len; });
-    $('causeDonut').innerHTML=`<svg width="160" height="160" viewBox="0 0 140 140">
-      <circle cx="70" cy="70" r="${R}" fill="none" stroke="#F1F5F9" stroke-width="22"></circle>${circ}
-      <text x="70" y="64" text-anchor="middle" font-family="IBM Plex Mono" font-size="30" font-weight="700" fill="#16202E">${total}</text>
-      <text x="70" y="84" text-anchor="middle" font-size="11" fill="#64748B">ocorrências</text></svg>`;
+    order.forEach(k=>{const v=counts[k],len=v/total*C;
+      circ+=`<circle cx="70" cy="70" r="${R}" fill="none" stroke="${CAUSA[k].c}" stroke-width="22" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-acc}" transform="rotate(-90 70 70)" style="stroke-dashoffset:${C}"></circle>`; acc+=len;});
+    $('causeDonut').innerHTML=`<svg width="160" height="160" viewBox="0 0 140 140"><circle cx="70" cy="70" r="${R}" fill="none" stroke="#F1F5F9" stroke-width="22"></circle>${circ}<text x="70" y="64" text-anchor="middle" font-family="IBM Plex Mono" font-size="30" font-weight="700" fill="#16202E">${DATA.length}</text><text x="70" y="84" text-anchor="middle" font-size="11" fill="#64748B">ocorrências</text></svg>`;
+    const fret=counts.FRETADO||0, desinf=counts.DESINFORMACAO||0;
+    $('causeRead').innerHTML=`<div class="k">Leitura</div>
+      Apenas <b>${fret} caso(s)</b> são falha que o fretado controla diretamente. <b>${desinf} caso(s)</b> são pessoas no ponto errado ou esperando ônibus cancelado por <b>falta de aviso</b>. O investimento de melhoria deveria ir para comunicação antes de ir para multa de fretado.`;
+    const rows=[...DATA].sort((a,b)=>a.causa.localeCompare(b.causa));
+    $('auditTbl').innerHTML=`<thead><tr><th>ID</th><th>Linha</th><th>Tipo</th><th>Validação</th><th>Causa atribuída</th><th>Por quê</th></tr></thead><tbody>${
+      rows.map(r=>`<tr><td class="num">${esc(r.id)}</td><td class="num">${esc(r.linha)}</td>
+        <td>${esc(shortT(r.tipo))}</td>
+        <td><span class="vtag ${r.proc?'p':'n'}">${r.proc?'Procede':'Não procede'}</span></td>
+        <td><span class="ctag" style="background:${CAUSA[r.causa].c}">${CAUSA[r.causa].l}</span></td>
+        <td class="why">${esc(r.why)}</td></tr>`).join('')}</tbody>`;
     requestAnimationFrame(()=>{
       $('causeBars').querySelectorAll('.cfill').forEach(b=>b.style.width=b.dataset.w+'%');
       let a=0; const cs=$('causeDonut').querySelectorAll('circle');
-      for(let i=1;i<cs.length;i++){ const k=order.filter(x=>counts[x])[i-1]; const len=(counts[k]||0)/total*C; cs[i].style.strokeDashoffset=(-a); a+=len; }
+      for(let i=1;i<cs.length;i++){ const k=order[i-1]; const len=(counts[k]||0)/total*C; cs[i].style.strokeDashoffset=(-a); a+=len; }
     });
   }
 
-  // ---- simulador ----
   const SEV={ATRASO:1.5,PONTO:3,FALTA:3};
-  const EXPOSURE={ '2004':60,'1000':40,'1008':20,'3004':30,'3000':30,'2007':120,'2000':80,'4':25 }; // ilustrativo
-
-  function causaPeso(o, descontar){
-    if(!o.proc) return 0.3;                 // não-procede: custa tratativa
-    if(o.causa==='FRETADO') return 1.0;
-    if(o.causa==='TRANSITO') return descontar?0.1:0.5;
-    if(o.causa==='CLIENTE')  return descontar?0.05:0.2;
-    return 0.3;
-  }
-
-  function compute(){
-    const grav=$('tgGrav').checked, desc=$('tgCausa').checked, rec=$('tgRec').checked;
-    const byLine={};
-    OCC.forEach(o=>{ (byLine[o.linha]=byLine[o.linha]||[]).push(o); });
-    const rows=Object.entries(byLine).map(([linha,occ])=>{
-      const exp=EXPOSURE[linha]||1;
-      const recMult = rec ? (1+0.25*(occ.length-1)) : 1;
-      let score=0;
-      occ.forEach(o=>{ const sev=grav?(SEV[o.tipo]||1):1; score += sev*causaPeso(o,desc); });
-      score = score*recMult/exp*100;
-      return { linha, count:occ.length, exp, rate:occ.length/exp*100, score };
+  function causaPeso(r,desc){ if(!r.proc)return 0.3; if(r.causa==='FRETADO')return 1; if(r.causa==='TRANSITO')return desc?0.1:0.5; if(r.causa==='CLIENTE')return desc?0.05:0.2; return 0.3; }
+  function computeSim(){
+    const grav=$('tgGrav').checked,desc=$('tgCausa').checked,rec=$('tgRec').checked;
+    const byLine={}; DATA.forEach(r=>{(byLine[r.linha]=byLine[r.linha]||[]).push(r);});
+    return Object.entries(byLine).map(([linha,occ])=>{
+      const exp=expFor(linha), recMult=rec?(1+0.25*(occ.length-1)):1; let score=0;
+      occ.forEach(o=>{ const sev=grav?(SEV[o.tk]||1):1; score+=sev*causaPeso(o,desc); });
+      score=score*recMult/exp*100;
+      return {linha,count:occ.length,exp,rate:occ.length/exp*100,score};
     });
-    return rows;
   }
-
   function renderSim(){
-    const rows=compute();
-    const byCount=[...rows].sort((a,b)=>b.count-a.count);
-    const byScore=[...rows].sort((a,b)=>b.score-a.score);
-    const countRank={}, scoreRank={};
-    byCount.forEach((r,i)=>countRank[r.linha]=i+1);
-    byScore.forEach((r,i)=>scoreRank[r.linha]=i+1);
+    const rows=computeSim();
+    if(!rows.length){ $('simTbl').innerHTML='<tbody><tr><td style="padding:18px;color:var(--muted)">Sem dados.</td></tr></tbody>'; return; }
+    const byCount=[...rows].sort((a,b)=>b.count-a.count), byScore=[...rows].sort((a,b)=>b.score-a.score);
+    const cr={},sr={}; byCount.forEach((r,i)=>cr[r.linha]=i+1); byScore.forEach((r,i)=>sr[r.linha]=i+1);
     const maxScore=Math.max(...rows.map(r=>r.score),0.01);
-
-    let html=`<thead><tr><th>Risco</th><th>Linha</th><th>Ocorr.</th><th>Viagens</th>
-      <th>Ocorr./100</th><th>Índice</th><th>Visual</th><th>vs contagem</th></tr></thead><tbody>`;
+    let html=`<thead><tr><th>Risco</th><th>Linha</th><th>Ocorr.</th><th>Viagens</th><th>Ocorr./100</th><th>Índice</th><th>Visual</th><th>vs contagem</th></tr></thead><tbody>`;
     byScore.forEach((r,i)=>{
-      const rb = i===0?'rankbadge r1':i===1?'rankbadge r2':'rankbadge';
-      const move = countRank[r.linha]-scoreRank[r.linha]; // >0 subiu no ranking de risco
-      let flip,cls;
-      if(move>0){ flip=`▲ ${move}`; cls='up'; }
-      else if(move<0){ flip=`▼ ${-move}`; cls='down'; }
-      else { flip='='; cls='same'; }
-      html+=`<tr class="${i===0?'hot':''}">
-        <td><span class="${rb}">${i+1}</span></td>
-        <td class="num"><b>${r.linha}</b></td>
-        <td class="num">${r.count}</td>
-        <td><input type="number" min="1" value="${r.exp}" data-l="${r.linha}"></td>
-        <td class="num">${r.rate.toFixed(2)}</td>
-        <td class="num"><b>${r.score.toFixed(2)}</b></td>
+      const rb=i===0?'rankbadge r1':i===1?'rankbadge r2':'rankbadge';
+      const move=cr[r.linha]-sr[r.linha]; let flip,cls;
+      if(move>0){flip=`▲ ${move}`;cls='up';} else if(move<0){flip=`▼ ${-move}`;cls='down';} else {flip='=';cls='same';}
+      html+=`<tr class="${i===0?'hot':''}"><td><span class="${rb}">${i+1}</span></td>
+        <td class="num"><b>${esc(r.linha)}</b></td><td class="num">${r.count}</td>
+        <td><input type="number" min="1" value="${r.exp}" data-l="${esc(r.linha)}"></td>
+        <td class="num">${r.rate.toFixed(2)}</td><td class="num"><b>${r.score.toFixed(2)}</b></td>
         <td style="min-width:90px"><div class="barmini" data-w="${(r.score/maxScore*100).toFixed(1)}"></div></td>
         <td class="flip ${cls}">${flip}</td></tr>`;
     });
-    html+='</tbody>';
-    $('simTbl').innerHTML=html;
-    $('simTbl').querySelectorAll('input[data-l]').forEach(inp=>inp.onchange=()=>{
-      const v=Math.max(1,parseInt(inp.value)||1); EXPOSURE[inp.dataset.l]=v; renderSim();
-    });
+    $('simTbl').innerHTML=html+'</tbody>';
+    $('simTbl').querySelectorAll('input[data-l]').forEach(inp=>inp.onchange=()=>{EXPOSURE[inp.dataset.l]=Math.max(1,parseInt(inp.value)||1);renderSim();});
     requestAnimationFrame(()=>$('simTbl').querySelectorAll('.barmini').forEach(b=>b.style.width=b.dataset.w+'%'));
   }
-
   ['tgGrav','tgCausa','tgRec'].forEach(id=>$(id).onchange=renderSim);
 
-  renderCause();
-  renderSim();
+  function renderComms(){
+    const desinf=DATA.filter(r=>r.causa==='DESINFORMACAO'); const t=DATA.length;
+    const ids=desinf.map(r=>r.id).join(', ');
+    $('commsLead').innerHTML=`<b>${desinf.length} de ${t}</b> casos têm informação — não condução — na raiz: o colaborador não sabia da mudança de ponto, itinerário ou cancelamento. Mesmo quando o veículo "atendeu o padrão" e a ocorrência vira improcedente, <b>houve custo real</b>: gente esperando, estresse, risco de atraso na produção.${ids?` Registros: <span class="num">${esc(ids)}</span>.`:''}`;
+  }
+
+  function renderSLA(){
+    const w=DATA.filter(r=>r.sla!=null); if(!w.length){ $('slaLead').textContent='Sem dados de SLA.'; return; }
+    const avg=w.reduce((a,b)=>a+b.sla,0)/w.length;
+    const out=[...w].sort((a,b)=>b.sla-a.sla)[0];
+    const extra = out.sla>=avg*2&&out.sla>avg+1 ? ` Mas o registro <b>${esc(out.id)}</b> levou <b>${out.sla} dias</b> — fora da curva.` : '';
+    $('slaLead').innerHTML=`O retorno do fretado leva em média <b>${avg.toFixed(1)} dias</b>.${extra} As tratativas tendem a fechar em mutirão; sem meta de SLA, o tempo de resposta fica à mercê da agenda de quem tira o lote.`;
+  }
+
+  async function liveFetch(){
+    try{
+      const res=await fetch(GVIZ,{cache:'no-store'}); const txt=await res.text();
+      if(!res.ok||txt.trim().startsWith('<')||!/ID|EMPRESA/i.test((txt.split('\n')[0]||''))) throw 0;
+      setData(parseCSV(txt),true);
+    }catch(e){ if(!DATA.length) setData(parseCSV($('seed').textContent),false);
+      else { $('pulse').classList.add('snap'); $('pulseTxt').textContent='SNAPSHOT'; } }
+  }
+
+  setData(parseCSV($('seed').textContent),false);
+  liveFetch();
+  setInterval(liveFetch,30000);
 })();
 </script>
 </body>
